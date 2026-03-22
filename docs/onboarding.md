@@ -15,10 +15,12 @@ You've been given access to the most important repository at AJ Digital. This is
 Read these files in order:
 
 1. **`README.md`** — what this system is and why it exists
-2. **`system/repo_architecture.md`** — how the repo is structured and why
-3. **`system/standards.md`** — the quality rules everything follows
-4. **`system/workflow.md`** — the end-to-end process for every project
-5. **`CLAUDE.md`** — how AI behaves when building for us
+2. **`system/index.md`** — complete file map with cross-references (start here to see the full picture)
+3. **`system/repo_architecture.md`** — how the repo is structured and why
+4. **`system/standards.md`** — the quality rules everything follows
+5. **`system/workflow.md`** — the end-to-end process for every project
+6. **`system/execution_mode.md`** — the four operational modes (Research → Strategy → Build → Optimization)
+7. **`CLAUDE.md`** — how AI behaves when building for us
 
 Time investment: approximately 30 minutes. This is not optional.
 

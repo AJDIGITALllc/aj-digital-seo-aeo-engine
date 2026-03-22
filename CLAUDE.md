@@ -1,6 +1,7 @@
 # CLAUDE.md — AI Behavior Contract
 
-**Version:** 1.0
+**Version:** 1.1
+**Last updated:** 2026-03-22
 **Owner:** AJ Digital LLC
 **Scope:** All Claude Code and AI-assisted development within AJ Digital projects
 
@@ -16,16 +17,38 @@ Every decision you make must reflect this identity.
 
 ---
 
+## Skill Resolution Protocol
+
+Before any task, determine which skill docs to load. Follow this decision tree:
+
+| Task Type | Primary Docs | Supporting Docs |
+|-----------|-------------|----------------|
+| Website build | `design_system.md`, `million_dollar_websites.md`, `page_blueprints.md`, `claude_templates.md` | `brand_system.md`, `content_system.md` |
+| UI generation | `anti_gravity_prompts.md`, `design_system.md`, `page_blueprints.md` | `million_dollar_websites.md` |
+| Brand work | `brand_system.md` | `content_system.md` |
+| Content writing | `content_system.md` | `million_dollar_websites.md` (for CRO/SEO) |
+| Sales artifact | `sales_system.md` | `content_system.md` |
+| Automation design | `automation_system.md` | — |
+| Research | `/prompts/research/senior_research_prompt.md` | `million_dollar_websites.md` |
+| Audit | `/prompts/audit/website_audit_prompt.md`, `conversion_audit_checklist.md` | `design_system.md`, `page_blueprints.md` |
+
+All skill docs live under `/skills/`. All prompts under `/prompts/`. All templates under `/templates/`.
+
+If no skill doc covers the task, apply the principles in this file and flag the gap explicitly.
+
+---
+
 ## Core Directives
 
 ### 1. Reference Skill Docs Before Building
 
 Before writing any code or generating any UI:
 
-1. Check if a relevant skill doc exists in `/skills/`
+1. Resolve which skill docs apply using the Skill Resolution Protocol above
 2. Read the applicable design system rules in `skills/web_building/design_system.md`
-3. Apply the strategic frameworks from `skills/web_building/million_dollar_websites.md`
-4. Follow the component patterns in `skills/web_building/claude_templates.md`
+3. Select the matching page blueprint from `skills/web_building/page_blueprints.md`
+4. Apply the strategic frameworks from `skills/web_building/million_dollar_websites.md`
+5. Follow the component patterns in `skills/web_building/claude_templates.md`
 
 **Never build from memory alone.** The skill docs are the source of truth.
 
@@ -87,7 +110,7 @@ Target metrics:
 | Metric              | Target          |
 |---------------------|-----------------|
 | Largest Contentful Paint (LCP) | < 2.5s  |
-| First Input Delay (FID)        | < 100ms |
+| Interaction to Next Paint (INP) | < 200ms |
 | Cumulative Layout Shift (CLS)  | < 0.1   |
 | Time to Interactive (TTI)      | < 3.5s  |
 | Total Page Weight              | < 500KB initial load |
@@ -195,11 +218,13 @@ When facing a tradeoff, prioritize in this order:
 
 ## Interaction Protocol
 
-1. **Read first.** Before building, confirm you've reviewed relevant skill docs.
-2. **Plan before code.** Outline the component structure and data flow before implementation.
-3. **Build incrementally.** One section at a time, validated against design system rules.
-4. **Explain tradeoffs.** When you make a design or technical choice, state the reasoning.
-5. **Flag gaps.** If skill docs are missing information you need, say so explicitly.
+1. **Declare execution mode.** State which mode you are operating in per `system/execution_mode.md` (Research, Strategy, Build, or Optimization).
+2. **Resolve skills.** Use the Skill Resolution Protocol to load the right docs.
+3. **Plan before code.** Outline the component structure and data flow before implementation.
+4. **Build incrementally.** One section at a time, validated against design system rules.
+5. **Validate after each section.** Check spacing, typography, accessibility, and CRO before moving on.
+6. **Explain tradeoffs.** When you make a design or technical choice, state the reasoning.
+7. **Flag gaps.** If skill docs are missing information you need, say so explicitly.
 
 ---
 
@@ -209,9 +234,13 @@ Always have these files loaded or referenced when building:
 
 - `skills/web_building/design_system.md` — spacing, typography, color, layout
 - `skills/web_building/million_dollar_websites.md` — strategy, CRO, SEO, AEO
+- `skills/web_building/page_blueprints.md` — page-level structural blueprints
 - `skills/web_building/claude_templates.md` — component prompts and patterns
+- `system/execution_mode.md` — operational execution modes and pipeline sequencing
 - `system/standards.md` — code and documentation quality rules
 
 ---
+
+*This file is the behavioral contract for all AI-assisted development at AJ Digital LLC. Deviations require explicit override from the project lead.*
 
 *This file is the behavioral contract for all AI-assisted development at AJ Digital LLC. Deviations require explicit override from the project lead.*

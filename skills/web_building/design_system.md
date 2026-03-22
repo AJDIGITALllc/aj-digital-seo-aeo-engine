@@ -62,6 +62,29 @@ These are **never** acceptable: 5px, 10px, 12px, 15px, 17px, 20px, 25px, 30px, 3
 
 If a design calls for 10px, use 8px. If it calls for 20px, use 16px or 24px. Always round to the nearest multiple of 8.
 
+### Tailwind CSS Token Mapping
+
+Apply these in `tailwind.config.ts` to enforce the system in code:
+
+```typescript
+// tailwind.config.ts (extend section)
+spacing: {
+  'space-1': '0.5rem',   // 8px
+  'space-2': '1rem',     // 16px
+  'space-3': '1.5rem',   // 24px
+  'space-4': '2rem',     // 32px
+  'space-5': '2.5rem',   // 40px
+  'space-6': '3rem',     // 48px
+  'space-8': '4rem',     // 64px
+  'space-10': '5rem',    // 80px
+  'space-12': '6rem',    // 96px
+  'space-16': '8rem',    // 128px
+  'space-20': '10rem',   // 160px
+}
+```
+
+Use these tokens exclusively: `p-space-3`, `gap-space-4`, `py-space-12`. Raw Tailwind values like `p-5` or `gap-7` bypass the system and must be avoided.
+
 ---
 
 ## Golden Ratio Typography

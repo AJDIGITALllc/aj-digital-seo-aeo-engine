@@ -46,28 +46,31 @@ ARCHITECTURE REQUIREMENTS:
    - Never nests more than 2 levels deep
    - Uses clear, descriptive directory names (lowercase, underscores)
    - Separates knowledge (skills), process (workflows), and tools (templates/prompts)
+   - Follows the layer model in `system/repo_architecture.md`: System → Skills → Prompts → Templates
 
 2. FILE DESIGN
    For each file in the structure:
    - Define its purpose (one sentence)
-   - Define its sections (what it must contain)
+   - Define its sections using the standard skill file structure:
+     Purpose → Scope → Principles → Frameworks → Checklists/Templates
    - Ensure it is self-contained (readable without needing other files)
    - Ensure it is composable (can be combined with other files for larger workflows)
+   - Follow the markdown formatting rules in `system/standards.md`
 
 3. STANDARDS
-   Define standards for:
-   - File naming conventions
-   - Markdown formatting rules
-   - Content quality requirements
-   - Section structure requirements
-   - Versioning and change documentation
+   Apply these rules (from Skill OS standards):
+   - File naming: lowercase, underscores, `.md` extension, descriptive
+   - Directory naming: lowercase, underscores, max 2 levels deep
+   - Every file starts with `# Title` + `**One-line purpose**` + `---`
+   - No placeholder content, no TODO/TBD/WIP
+   - Every section must be actionable, not just descriptive
+   - Tables for structured comparisons, code blocks for structures
 
 4. GOVERNANCE
    Define:
    - Who can modify files and how (PR process, review requirements)
-   - How new files are added (process, approval, quality gate)
-   - How files are retired (deprecation process)
-   - How the system stays current (review cadence)
+   - How new files are added (validate against standards before merge)
+   - How the system stays current (quarterly review cadence)
 
 OUTPUT REQUIREMENTS:
 - Full directory tree with file descriptions

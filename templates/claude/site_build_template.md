@@ -19,6 +19,8 @@ This template is the starting input for Claude Code when building a new website.
 5. Build section by section — do not ask Claude to build the entire site in one message
 6. Validate each section against the checklist before moving to the next
 
+> **Relationship to Anti-Gravity template:** This template targets **Claude Code** for full code generation. If you need visual UI mockups first, use `/templates/anti_gravity/site_generation_template.md` to generate the design, then translate it into code using this template. Both templates share the same content structure so project data transfers seamlessly between them.
+
 ---
 
 ## The Template
@@ -33,7 +35,7 @@ All output must meet these non-negotiable requirements:
 - 8pt spacing system (all values multiples of 8)
 - Golden ratio typography scale
 - WCAG 2.1 AA accessibility
-- Core Web Vitals targets (LCP < 2.5s, CLS < 0.1)
+- Core Web Vitals targets (LCP < 2.5s, INP < 200ms, CLS < 0.1)
 - Semantic HTML throughout
 - Mobile-first responsive design
 - SEO + AEO optimized structure

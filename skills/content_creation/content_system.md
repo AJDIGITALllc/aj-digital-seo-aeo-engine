@@ -239,15 +239,41 @@ AI search engines extract content differently than traditional search crawlers. 
 
 ---
 
-## Future Modules
+## Content Brief Template
 
-| Module                           | Description                                    |
-|---------------------------------|------------------------------------------------|
-| `content_strategy_framework.md` | Topic clusters, content pillars, editorial calendars |
-| `seo_content_playbook.md`       | Keyword research → content production pipeline |
-| `aeo_content_playbook.md`       | Structuring content for AI search extraction   |
-| `copywriting_frameworks.md`     | AIDA, PAS, BAB, StoryBrand — detailed playbooks |
-| `content_repurposing_system.md` | One piece → multiple formats pipeline          |
+Use this for every page before writing:
+
+```
+Page: [NAME]
+URL: [TARGET URL PATH]
+Primary keyword: [KEYWORD] (volume: ___, difficulty: ___)
+Secondary keywords: [2–3 KEYWORDS]
+Search intent: [INFORMATIONAL / COMMERCIAL / TRANSACTIONAL]
+Target persona: [NAME OR DESCRIPTION]
+
+Page purpose: [WHAT ACTION SHOULD THE VISITOR TAKE?]
+
+Messaging hierarchy:
+1. [MOST IMPORTANT MESSAGE — headline territory]
+2. [SUPPORTING MESSAGE — subheadline / first section]
+3. [PROOF / TRUST — social proof, metrics, case studies]
+4. [OBJECTION HANDLING — FAQ, risk reversal]
+5. [CALL TO ACTION — restated value + CTA]
+
+Proof points available:
+- [METRIC, TESTIMONIAL, OR CASE STUDY]
+- [METRIC, TESTIMONIAL, OR CASE STUDY]
+
+Competitor content benchmark:
+- Top ranking page word count: ___
+- Content gaps to exploit: [WHAT THEY MISS]
+```
+
+Do not begin writing without a completed brief. Content without direction produces filler.
+
+---
+
+*Every word on the page either moves the visitor forward or pushes them away. There is no neutral copy.*
 
 ---
 

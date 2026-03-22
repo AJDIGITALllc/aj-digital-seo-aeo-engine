@@ -11,12 +11,12 @@ The Skill OS currently covers five core domains with foundational skill docs:
 | Domain            | Status       | Depth    |
 |-------------------|-------------|----------|
 | Web Building      | Active      | Deep     |
-| Branding          | Active      | Foundation |
-| Content Creation  | Active      | Foundation |
-| Automation        | Active      | Foundation |
-| Sales             | Active      | Foundation |
+| Branding          | Active      | Foundation + Checklist |
+| Content Creation  | Active      | Foundation + Brief Template |
+| Automation        | Active      | Foundation + Spec Template |
+| Sales             | Active      | Foundation + Scorecard |
 
-Web Building is the most developed domain. The remaining four have architectural foundations ready for deep expansion.
+Web Building is the most developed domain. The remaining four have architectural foundations with actionable templates ready for deep expansion.
 
 ---
 

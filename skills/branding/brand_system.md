@@ -182,14 +182,22 @@ When translating a brand system into a website:
 
 ---
 
-## Future Modules
+## Brand Brief Checklist
 
-| Module                          | Description                                    |
-|--------------------------------|------------------------------------------------|
-| `brand_discovery_framework.md` | Structured client interview → strategy pipeline |
-| `visual_identity_system.md`    | Logo rules, icon systems, photography guides   |
-| `voice_and_tone_guide.md`      | Deep-dive with content examples per archetype  |
-| `brand_audit_framework.md`     | Evaluate and score existing brand consistency   |
+Before starting any web build, confirm the following brand elements are defined:
+
+- [ ] Positioning statement completed (see template above)
+- [ ] Primary and secondary colors with hex values
+- [ ] Heading and body font families selected
+- [ ] Voice dimensions scored (formal↔casual, serious↔playful, technical↔simple, reserved↔bold)
+- [ ] Brand archetype identified
+- [ ] 3–5 differentiators articulated
+- [ ] Target audience personas defined with pain points
+- [ ] Logo files provided (SVG, PNG, dark/light variants)
+- [ ] Photography/imagery direction documented
+- [ ] Competitor positioning mapped
+
+If any item is missing, complete it before building. A website without brand clarity produces generic output.
 
 ---
 

@@ -206,15 +206,38 @@ Analytics ──── ──→ ─┤            ├── Reporting
 
 ---
 
-## Future Modules
+## Automation Specification Template
 
-| Module                          | Description                                    |
-|--------------------------------|------------------------------------------------|
-| `client_automation_playbook.md`| Detailed CRM, email, booking automation patterns |
-| `internal_ops_automation.md`   | Full internal workflow automation library       |
-| `integration_patterns.md`      | Platform-specific integration guides            |
-| `ai_workflow_automation.md`    | Claude, GPT, and custom AI integration patterns |
-| `monitoring_and_alerts.md`     | Uptime, performance, and business alerting     |
+Document every automation before building it:
+
+```
+Automation name: [DESCRIPTIVE NAME]
+Owner: [WHO MAINTAINS THIS]
+Platform: [Zapier / Make / n8n / custom]
+
+Trigger:
+  Event: [WHAT STARTS IT]
+  Source: [WHICH SYSTEM]
+  Frequency: [HOW OFTEN IT FIRES]
+
+Steps:
+  1. [ACTION] → [SYSTEM] → [EXPECTED RESULT]
+  2. [ACTION] → [SYSTEM] → [EXPECTED RESULT]
+  3. [ACTION] → [SYSTEM] → [EXPECTED RESULT]
+
+Error handling:
+  On failure at step ___: [RETRY / SKIP / ALERT via ___]
+
+Success criteria:
+  - [WHAT MUST BE TRUE FOR THIS TO BE "WORKING"]
+
+ROI estimate:
+  Time saved per run: ___ minutes
+  Runs per month: ___
+  Annual value: $___
+```
+
+If you cannot fill out this template, the automation is not ready to build.
 
 ---
 

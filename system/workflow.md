@@ -157,7 +157,7 @@ Skipping phases creates quality debt. The process exists to prevent it.
 
 ### Performance
 - [ ] LCP < 2.5 seconds
-- [ ] FID < 100ms
+- [ ] INP < 200ms
 - [ ] CLS < 0.1
 - [ ] Page weight < 500KB initial load
 - [ ] All images optimized (WebP/AVIF, lazy loaded, dimensioned)

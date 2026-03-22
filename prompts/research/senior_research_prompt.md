@@ -85,17 +85,19 @@ RESEARCH TASKS:
    - Entity definition recommendations (how to describe the business for AI understanding)
 
 OUTPUT FORMAT:
-- Organized with clear headers for each section
-- Competitor analysis in comparison tables
-- Keyword data in tables with volume, difficulty, and opportunity rating
-- Recommendations are specific and actionable (not vague)
-- Total length: comprehensive — this is the foundation for the entire project
+- Organized with clear H2 headers for each section
+- Competitor analysis in a comparison table (columns: competitor, headline/value prop, CTA strategy, trust signals, design quality, SEO strength, key weakness)
+- Keyword data in a table with columns: keyword, estimated volume, difficulty, intent, opportunity rating (high/medium/low)
+- Audience personas in a structured template: role, company size, pain points, language patterns, decision factors
+- Recommendations are specific and actionable — "Add FAQ schema with 7 questions targeting [specific queries]" not "Improve SEO"
+- Total length: 2,000–4,000 words — comprehensive but not padded
 
 QUALITY BAR:
 - Findings must be specific enough to directly inform design and content decisions
 - Recommendations must reference specific competitor examples where relevant
 - Every recommendation must include a rationale ("because...")
 - If data is unavailable, flag it explicitly rather than guessing
+- Output must be structured so it can be directly pasted into a site_build_template.md
 ```
 
 ---

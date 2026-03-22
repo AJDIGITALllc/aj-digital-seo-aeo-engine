@@ -239,15 +239,30 @@ Onboarding is the first delivery experience. A smooth onboarding confirms the cl
 
 ---
 
-## Future Modules
+## Lead Qualification Scorecard
 
-| Module                       | Description                                    |
-|-----------------------------|------------------------------------------------|
-| `sales_process_framework.md`| Detailed stage-by-stage process with scripts   |
-| `pricing_strategy.md`       | Value-based pricing models and packaging       |
-| `proposal_system.md`        | Proposal templates and automation              |
-| `objection_handling.md`     | Comprehensive objection response library       |
-| `client_qualification.md`   | Lead scoring model and disqualification rules  |
+Score every inbound lead before investing discovery time:
+
+| Signal | Score | Criteria |
+|--------|-------|----------|
+| Clear business goal | +3 | They can articulate a specific outcome, not just "new website" |
+| Budget aligned | +3 | Budget range is within our minimum ($10K+) |
+| Decision-maker involved | +2 | The person inquiring can approve the project |
+| Realistic timeline | +2 | 4+ weeks for standard projects, 8+ for complex |
+| Referral source | +1 | Came through a referral or existing client |
+| Competitor shopping | -2 | Sent the same brief to 5+ agencies |
+| No defined goal | -3 | "We just need a website" with no business context |
+| Budget far below minimum | -3 | Looking for $500–$2,000 work |
+
+**Score interpretation:**
+- **8–11:** Strong lead — book discovery call immediately
+- **4–7:** Moderate — send qualifying questions before booking
+- **0–3:** Weak — send resources, add to nurture, do not book call
+- **Below 0:** Disqualify — polite decline with referral to a better fit
+
+---
+
+*The fastest path to revenue is saying no to the wrong deals and yes to the right ones.*
 
 ---
 

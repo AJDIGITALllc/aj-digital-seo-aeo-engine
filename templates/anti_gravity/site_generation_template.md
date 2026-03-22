@@ -19,6 +19,8 @@ This template gives Anti-Gravity the complete context it needs to generate UI th
 5. Evaluate the output against the validation checklist at the bottom
 6. Iterate with specific refinements, not vague requests
 
+> **Relationship to Claude build template:** This template targets **Anti-Gravity** for visual UI generation. After validating the design output, transfer the project data into `/templates/claude/site_build_template.md` to build the production code. Both templates share the same content structure intentionally — fill in the project brief once, reuse across both tools.
+
 ---
 
 ## The Template

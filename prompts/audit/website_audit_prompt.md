@@ -109,7 +109,7 @@ AUDIT DIMENSIONS:
 
    Evaluate (reference Core Web Vitals):
    - Largest Contentful Paint (LCP): target < 2.5 seconds
-   - First Input Delay (FID) / Interaction to Next Paint (INP): target < 200ms
+   - Interaction to Next Paint (INP): target < 200ms
    - Cumulative Layout Shift (CLS): target < 0.1
    - Total page weight: target < 500KB initial load
    - Image optimization: proper formats, sizing, lazy loading

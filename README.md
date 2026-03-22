@@ -62,6 +62,7 @@ aj-digital-skill-os/
 │
 ├── README.md                  # This file
 ├── CLAUDE.md                  # AI behavior contract
+├── CHANGELOG.md               # Version history
 └── LICENSE.md                 # Proprietary license
 ```
 
@@ -134,7 +135,7 @@ This is not documentation for documentation's sake. Every file in this repo is a
 
 ```bash
 # Clone the repo
-git clone https://github.com/aj-digital/aj-digital-skill-os.git
+git clone https://github.com/AJDIGITALORG/aj-digital-skill-os.git
 
 # Read the architecture
 cat system/repo_architecture.md
