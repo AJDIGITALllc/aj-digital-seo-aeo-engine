@@ -58,6 +58,8 @@ Gather high-quality, structured intelligence that directly informs strategy and 
 - Competitors
 - Target keywords (if known)
 
+All inputs should be sourced from a completed project brief (`/templates/_project_brief.md` §1, §2, §6, §7).
+
 ## Process
 
 1. Run `/prompts/research/senior_research_prompt.md`
@@ -93,6 +95,8 @@ Translate research into a concrete build plan with page-level decisions.
 - Research output (from Research Mode or existing knowledge)
 - Business goals
 - Offer definition
+
+All inputs should be sourced from a completed project brief (`/templates/_project_brief.md` §3, §4, §5) combined with research output.
 
 ## Process
 

@@ -25,6 +25,7 @@
 | `workflow.md` | 9-phase project execution process | All build work, onboarding |
 | `standards.md` | Naming, formatting, quality, enforcement rules | Every contributor, CLAUDE.md |
 | `execution_mode.md` | Operational execution modes (Research, Strategy, Build, Optimization) | CLAUDE.md, workflow, all build work |
+| `client_delivery_pipeline.md` | End-to-end client delivery workflow (12 phases, lead to retention) | CLAUDE.md, workflow, execution_mode |
 
 ---
 
@@ -48,7 +49,8 @@
 | `branding/brand_system.md` | Brand strategy, identity, voice/tone, web translation | Content system, build templates |
 | `content_creation/content_system.md` | Content strategy, CRO copy, SEO/AEO writing rules | Build templates, brand system |
 | `automation/automation_system.md` | Automation decision framework, integration patterns | Workflow |
-| `sales/sales_system.md` | Sales process, pricing, proposals, objection handling | Standalone |
+| `sales/sales_system.md` | Sales process, pricing, proposals, objection handling | offer_architecture.md |
+| `sales/offer_architecture.md` | Offer tiers, deliverables, pricing logic, scope control, sales-to-delivery handoff | sales_system.md, client_delivery_pipeline.md |
 
 ---
 
@@ -68,6 +70,7 @@
 |------|---------|---------------|
 | `claude/site_build_template.md` | Complete input template for Claude Code website builds | Workflow Phase 5, onboarding |
 | `anti_gravity/site_generation_template.md` | Complete input template for Anti-Gravity UI generation | Workflow Phase 6, onboarding |
+| `_project_brief.md` | Standardized project input format shared across all templates and modes | Both build templates, execution_mode.md |
 
 ---
 
@@ -96,6 +99,7 @@ senior_research_prompt.md ──feeds──→ site_build_template.md (via strat
 
 workflow.md ──orchestrates──→ all prompts and templates
 execution_mode.md ──sequences──→ research → strategy → build → optimization
+client_delivery_pipeline.md ──orchestrates──→ full client lifecycle (lead → retention)
 standards.md ──governs──→ all files
 ```
 

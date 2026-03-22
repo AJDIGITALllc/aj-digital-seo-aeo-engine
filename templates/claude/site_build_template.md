@@ -12,8 +12,8 @@ This template is the starting input for Claude Code when building a new website.
 
 ## Usage Instructions
 
-1. Copy the template below
-2. Replace all `[BRACKETED]` sections with project-specific information
+1. Start with a completed project brief (`/templates/_project_brief.md`) — this is your structured input
+2. Copy the template below and transfer brief data into the matching sections
 3. Ensure `CLAUDE.md` is loaded in the conversation context
 4. Send the complete template as your initial prompt
 5. Build section by section — do not ask Claude to build the entire site in one message

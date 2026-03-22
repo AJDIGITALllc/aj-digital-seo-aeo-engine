@@ -20,7 +20,8 @@ Read these files in order:
 4. **`system/standards.md`** — the quality rules everything follows
 5. **`system/workflow.md`** — the end-to-end process for every project
 6. **`system/execution_mode.md`** — the four operational modes (Research → Strategy → Build → Optimization)
-7. **`CLAUDE.md`** — how AI behaves when building for us
+7. **`system/client_delivery_pipeline.md`** — full client delivery lifecycle (12 phases, lead to retention)
+8. **`CLAUDE.md`** — how AI behaves when building for us
 
 Time investment: approximately 30 minutes. This is not optional.
 

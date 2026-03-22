@@ -24,6 +24,7 @@ Sales is the engine that funds everything else. This skill defines a repeatable,
 - Pricing calculators (future module)
 - CRM configuration (see automation_system.md)
 - Marketing and lead generation (future module)
+- Offer tiers, deliverables, and scope control (see `offer_architecture.md`)
 
 ---
 

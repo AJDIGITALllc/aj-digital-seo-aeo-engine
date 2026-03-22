@@ -12,8 +12,8 @@ This template gives Anti-Gravity the complete context it needs to generate UI th
 
 ## Usage Instructions
 
-1. Copy the template below
-2. Fill in all `[BRACKETED]` sections with project-specific details
+1. Start with a completed project brief (`/templates/_project_brief.md`) — this is your structured input
+2. Copy the template below and transfer brief data into the matching sections
 3. Review the design direction section — select or customize a style
 4. Feed the complete template to Anti-Gravity
 5. Evaluate the output against the validation checklist at the bottom

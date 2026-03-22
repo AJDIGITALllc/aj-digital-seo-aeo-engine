@@ -16,6 +16,43 @@ Versions are tagged at the point of commit, not at the point of authoring.
 
 ---
 
+## [1.4.0] — 2026-03-22
+
+**Summary:** Added the offer architecture for AJ Digital's website and digital delivery services. The Skill OS now defines exactly what is sold, at what tier, to whom, and how sales commitments translate to delivery scope — closing the gap between sales and delivery.
+
+### Added
+
+- `skills/sales/offer_architecture.md` — Offer philosophy, 4 core offer categories (New Build, Redesign, Optimization, Retainer), 3 package tiers (Foundation, Growth, Custom) with deliverables matrices, included/excluded scope rules, qualification fit table, value-based pricing logic, tier-specific revision control, upsell paths, 3 retainer tiers (Maintain, Grow, Scale), optimization-only engagements, sales-to-delivery handoff rules with checklist, example offer matrix, decision tree, common misalignment risks, and concise handoff checklist.
+
+### Changed
+
+- `CLAUDE.md` — Skill Resolution Protocol updated: `offer_architecture.md` added to Sales artifact row.
+- `system/index.md` — Added `offer_architecture.md` to Sales file map. Updated `sales_system.md` reference from Standalone to `offer_architecture.md`.
+- `system/client_delivery_pipeline.md` — Alignment table expanded with `offer_architecture.md` reference for Phases 2–4.
+- `skills/sales/sales_system.md` — Scope exclusions updated to reference `offer_architecture.md` for tier/deliverable/scope definitions.
+
+---
+
+## [1.3.0] — 2026-03-22
+
+**Summary:** Added the standardized project brief template and end-to-end client delivery pipeline. The Skill OS now covers the full operational lifecycle — from lead intake through post-launch optimization and client retention — with defined owners, exit criteria, and failure risks at every phase.
+
+### Added
+
+- `templates/_project_brief.md` — Standardized 10-section project input format shared across all templates and execution modes, with usage instructions, alignment mapping, and a completed example (Podcraft Studio).
+- `system/client_delivery_pipeline.md` — 12-phase client delivery workflow (Lead Intake → Qualification → Discovery → Brief Creation → Research → Strategy → Build → QA/Audit → Client Review → Launch → Post-Launch Optimization → Handoff/Retention), with standard and fast-track flows, revision control rules, communication checkpoints, deliverables matrix, recommended artifacts, and failure mode summary.
+
+### Changed
+
+- `CLAUDE.md` — Skill Resolution Protocol updated with Client delivery row pointing to `client_delivery_pipeline.md`. File References expanded with `client_delivery_pipeline.md`.
+- `system/index.md` — Added `client_delivery_pipeline.md` to System file map and dependency flow. Added `_project_brief.md` to Templates file map.
+- `system/execution_mode.md` — Research Mode and Strategy Mode inputs now reference `/templates/_project_brief.md` sections.
+- `templates/claude/site_build_template.md` — Step 1 updated to start from project brief.
+- `templates/anti_gravity/site_generation_template.md` — Step 1 updated to start from project brief.
+- `docs/onboarding.md` — Reading order expanded to 8 steps, now includes `client_delivery_pipeline.md`.
+
+---
+
 ## [1.2.0] — 2026-03-22
 
 **Summary:** Added page-level blueprints, operational execution modes, and a 100-point conversion audit scoring system. The Skill OS now covers the full loop from strategy through build through optimization with enforceable quality gates.

@@ -27,10 +27,11 @@ Before any task, determine which skill docs to load. Follow this decision tree:
 | UI generation | `anti_gravity_prompts.md`, `design_system.md`, `page_blueprints.md` | `million_dollar_websites.md` |
 | Brand work | `brand_system.md` | `content_system.md` |
 | Content writing | `content_system.md` | `million_dollar_websites.md` (for CRO/SEO) |
-| Sales artifact | `sales_system.md` | `content_system.md` |
+| Sales artifact | `sales_system.md`, `offer_architecture.md` | `content_system.md` |
 | Automation design | `automation_system.md` | — |
 | Research | `/prompts/research/senior_research_prompt.md` | `million_dollar_websites.md` |
 | Audit | `/prompts/audit/website_audit_prompt.md`, `conversion_audit_checklist.md` | `design_system.md`, `page_blueprints.md` |
+| Client delivery | `/system/client_delivery_pipeline.md` | `execution_mode.md`, `_project_brief.md` |
 
 All skill docs live under `/skills/`. All prompts under `/prompts/`. All templates under `/templates/`.
 
@@ -237,6 +238,7 @@ Always have these files loaded or referenced when building:
 - `skills/web_building/page_blueprints.md` — page-level structural blueprints
 - `skills/web_building/claude_templates.md` — component prompts and patterns
 - `system/execution_mode.md` — operational execution modes and pipeline sequencing
+- `system/client_delivery_pipeline.md` — end-to-end client delivery workflow
 - `system/standards.md` — code and documentation quality rules
 
 ---
