@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ajdigital.com/schemas/publish-queue.schema.json",
+  "title": "Publish Queue",
+  "description": "The ordered list of articles to generate and publish for a given week, produced at the end of W-01 Intelligence Scan.",
+  "type": "object",
+  "required": ["generated_at", "week_of", "site_url", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this queue was built."
+    },
+    "week_of": {
+      "type": "string",
+      "description": "ISO week identifier for this queue (e.g. 2026-W14).",
+      "pattern": "^\\d{4}-W(0[1-9]|[1-4][0-9]|5[0-3])$",
+      "examples": ["2026-W14"]
+    },
+    "site_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Client site URL for this deployment."
+    },
+    "total_items": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of items in the queue."
+    },
+    "fast_track_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of items eligible for auto-publish."
+    },
+    "items": {
+      "type": "array",
+      "description": "Ordered list of articles to generate, highest priority first.",
+      "items": {
+        "type": "object",
+        "required": ["keyword", "intent", "priority", "fast_track", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "Primary target keyword for this article.",
+            "minLength": 1
+          },
+          "intent": {
+            "type": "string",
+            "enum": ["commercial", "transactional", "local", "informational"],
+            "description": "Classified search intent."
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": ["very_low", "low", "medium", "high", "unknown"],
+            "description": "Keyword difficulty estimate."
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low"],
+            "description": "Priority tier from the opportunity matrix."
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10,
+            "description": "Weighted opportunity score (0–10)."
+          },
+          "fast_track": {
+            "type": "boolean",
+            "description": "Whether this article is eligible for auto-publish bypass."
+          },
+          "aeo_question": {
+            "type": ["string", "null"],
+            "description": "Primary AEO question to answer in this article."
+          },
+          "recommended_action": {
+            "type": "string",
+            "enum": ["create", "optimize"],
+            "description": "Whether to create a new article or optimize an existing one.",
+            "default": "create"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["queued", "generating", "pending_approval", "published", "killed", "skipped"],
+            "description": "Current lifecycle status of this queue item.",
+            "default": "queued"
+          },
+          "brief_id": {
+            "type": ["string", "null"],
+            "description": "Sanity contentBrief document ID, populated after W-02 creates the brief.",
+            "default": null
+          },
+          "article_id": {
+            "type": ["string", "null"],
+            "description": "Sanity article document ID, populated after publish.",
+            "default": null
+          },
+          "queued_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this item was added to the queue."
+          },
+          "published_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "When this article was published to Sanity.",
+            "default": null
+          },
+          "kill_reason": {
+            "type": ["string", "null"],
+            "description": "If status is killed, the reason provided by the AEO validator or reviewer.",
+            "default": null
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "summary": {
+      "type": "object",
+      "description": "Aggregate stats for this queue (for Telegram weekly report).",
+      "additionalProperties": false,
+      "properties": {
+        "queued": { "type": "integer" },
+        "generating": { "type": "integer" },
+        "pending_approval": { "type": "integer" },
+        "published": { "type": "integer" },
+        "killed": { "type": "integer" },
+        "skipped": { "type": "integer" }
+      }
+    }
+  }
+}

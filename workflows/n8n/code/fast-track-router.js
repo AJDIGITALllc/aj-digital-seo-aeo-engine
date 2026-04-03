@@ -88,8 +88,9 @@ const keyword  = (brief.keyword || '').toLowerCase();
 const intent   = (brief.intent  || '').toLowerCase();
 const difficulty = (brief.difficulty || '').toLowerCase();
 
-// Check A: Local keyword signal
-const LOCAL_CITIES = ['miami', 'fort lauderdale', 'west palm', 'south florida', 'hialeah', 'brickell', 'coral gables', 'aventura', 'doral', 'near me'];
+// Check A: Local keyword signal — sourced from CLIENT_LOCAL_CITIES env var (comma-separated)
+const LOCAL_CITIES = ($env.CLIENT_LOCAL_CITIES || $env.CLIENT_PRIMARY_CITY || 'near me')
+  .toLowerCase().split(',').map(c => c.trim()).filter(Boolean);
 const isLocalKeyword = intent === 'local' || LOCAL_CITIES.some(c => keyword.includes(c));
 
 // Check B: Low difficulty + commercial intent

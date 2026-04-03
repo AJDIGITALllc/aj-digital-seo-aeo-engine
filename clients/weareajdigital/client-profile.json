@@ -1,0 +1,83 @@
+{
+  "$schema": "../../schemas/client-profile.schema.json",
+
+  "slug": "weareajdigital",
+  "brand_name": "AJ Digital",
+  "site_url": "https://weareajdigital.com",
+  "niche": "digital marketing agency — SEO, web design, Google Ads, and AI content strategy",
+  "primary_city": "Miami",
+  "local_cities": [
+    "Miami",
+    "Fort Lauderdale",
+    "West Palm Beach",
+    "South Florida",
+    "Hialeah",
+    "Brickell",
+    "Coral Gables",
+    "Aventura",
+    "Doral",
+    "near me"
+  ],
+  "seed_topics": [
+    "SEO services",
+    "web design",
+    "digital marketing",
+    "Google Ads management",
+    "social media marketing",
+    "AI content strategy",
+    "AEO optimization",
+    "local SEO Miami"
+  ],
+  "services": [
+    {
+      "name": "SEO Services",
+      "url": "https://weareajdigital.com/services/seo",
+      "primary": true
+    },
+    {
+      "name": "Web Design",
+      "url": "https://weareajdigital.com/services/web-design",
+      "primary": false
+    },
+    {
+      "name": "Google Ads Management",
+      "url": "https://weareajdigital.com/services/google-ads",
+      "primary": false
+    },
+    {
+      "name": "Social Media Marketing",
+      "url": "https://weareajdigital.com/services/social-media",
+      "primary": false
+    },
+    {
+      "name": "AI Content Strategy",
+      "url": "https://weareajdigital.com/services/ai-content",
+      "primary": false
+    }
+  ],
+  "author": {
+    "name": "Audio Jones",
+    "title": "Founder & CEO",
+    "bio_short": "Audio Jones is the founder of AJ Digital, a Miami-based digital marketing agency specializing in SEO, web design, and AI-driven content strategy.",
+    "linkedin_url": "https://linkedin.com/in/audiojones",
+    "photo_url": "https://weareajdigital.com/images/audio-jones-headshot.webp"
+  },
+  "schema_org": {
+    "type": "ProfessionalService",
+    "founding_year": 2019,
+    "phone": "+1-305-000-0000",
+    "address": {
+      "street": "1 Brickell Ave",
+      "city": "Miami",
+      "state": "FL",
+      "zip": "33131",
+      "country": "US"
+    },
+    "social_profiles": [
+      "https://linkedin.com/company/weareajdigital",
+      "https://instagram.com/weareajdigital",
+      "https://twitter.com/weareajdigital",
+      "https://facebook.com/weareajdigital"
+    ]
+  }
+}

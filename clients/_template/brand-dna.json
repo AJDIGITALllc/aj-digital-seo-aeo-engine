@@ -1,0 +1,52 @@
+{
+  "_comment": "Copy this file to clients/{your-slug}/brand-dna.json and fill in all values. Remove this comment before deploying.",
+  "$schema": "../../schemas/brand-dna.schema.json",
+
+  "voice": {
+    "adjectives": ["authoritative", "approachable", "direct", "results-driven"],
+    "style_statement": "Write like a senior expert explaining strategy to a smart business owner — confident, clear, no jargon, always tied to outcomes.",
+    "reading_level": "10th_grade",
+    "sentence_length": "mixed"
+  },
+  "tone_rules": [
+    { "rule": "Lead with the specific outcome before explaining the process", "type": "do" },
+    { "rule": "Use passive voice — always assign agency to a subject", "type": "do_not" },
+    { "rule": "Name frameworks and methodologies with proper nouns to build authority", "type": "do" },
+    { "rule": "Hedge genuine claims with 'might' or 'could' unless factually uncertain", "type": "do_not" },
+    { "rule": "Open every H2 section with a direct answer to the implied question", "type": "do" },
+    { "rule": "Use filler phrases: 'In today's world', 'It goes without saying', 'At the end of the day'", "type": "do_not" }
+  ],
+  "value_proposition": {
+    "headline": "Your brand's primary value proposition in under 60 characters.",
+    "sub": "Supporting sentence that backs up the headline and adds specificity.",
+    "differentiators": [
+      "Differentiator one — be specific, not vague",
+      "Differentiator two — tie to a measurable outcome",
+      "Differentiator three — address a common objection"
+    ]
+  },
+  "primary_cta": {
+    "text": "Get a Free Strategy Session",
+    "url": "/contact",
+    "context_sentence": "Ready to see what this could do for your business?"
+  },
+  "secondary_ctas": [
+    {
+      "text": "See Our Work",
+      "url": "/portfolio",
+      "context": "Use after case study or results sections"
+    }
+  ],
+  "forbidden_phrases": [
+    "game-changing",
+    "revolutionary",
+    "synergy",
+    "leverage (as a verb)",
+    "utilize",
+    "cutting-edge",
+    "best-in-class",
+    "world-class"
+  ],
+  "required_phrases": [],
+  "content_disclaimers": []
+}

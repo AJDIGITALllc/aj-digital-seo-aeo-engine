@@ -1,0 +1,55 @@
+{
+  "_comment": "Copy this file to clients/{your-slug}/client-profile.json and fill in all values. Remove this comment before deploying.",
+  "$schema": "../../schemas/client-profile.schema.json",
+
+  "slug": "your-client-slug",
+  "brand_name": "Your Brand Name",
+  "site_url": "https://yourdomain.com",
+  "niche": "describe your industry and service in one line",
+  "primary_city": "Your Primary City",
+  "local_cities": [
+    "Your Primary City",
+    "Nearby City 1",
+    "Nearby City 2"
+  ],
+  "seed_topics": [
+    "core service 1",
+    "core service 2",
+    "core service 3"
+  ],
+  "services": [
+    {
+      "name": "Primary Service Name",
+      "url": "https://yourdomain.com/services/primary-service",
+      "primary": true
+    },
+    {
+      "name": "Secondary Service Name",
+      "url": "https://yourdomain.com/services/secondary-service",
+      "primary": false
+    }
+  ],
+  "author": {
+    "name": "Author Full Name",
+    "title": "Author Professional Title",
+    "bio_short": "One to two sentence bio that will appear in article footers.",
+    "linkedin_url": "https://linkedin.com/in/your-profile",
+    "photo_url": "https://yourdomain.com/images/author-headshot.webp"
+  },
+  "schema_org": {
+    "type": "Organization",
+    "founding_year": 2020,
+    "phone": "+1-000-000-0000",
+    "address": {
+      "street": "123 Main St",
+      "city": "Your City",
+      "state": "XX",
+      "zip": "00000",
+      "country": "US"
+    },
+    "social_profiles": [
+      "https://linkedin.com/company/your-company",
+      "https://instagram.com/yourhandle"
+    ]
+  }
+}

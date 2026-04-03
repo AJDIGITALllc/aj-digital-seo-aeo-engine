@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ajdigital.com/schemas/internal-linking-map.schema.json",
+  "title": "Internal Linking Map",
+  "description": "Resolves [LINK:...] placeholders from Claude-generated articles to actual site URLs and anchor text.",
+  "type": "object",
+  "required": ["article_slug", "generated_at", "links"],
+  "additionalProperties": false,
+  "properties": {
+    "article_slug": {
+      "type": "string",
+      "description": "Slug of the article this linking map belongs to.",
+      "minLength": 1,
+      "examples": ["what-is-podcast-production"]
+    },
+    "article_id": {
+      "type": "string",
+      "description": "Sanity document ID of the article (populated after publish)."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the map was generated."
+    },
+    "site_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Client site base URL (from CLIENT_SITE_URL env var)."
+    },
+    "total_links": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of link entries in this map."
+    },
+    "resolved_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of links that have been human-verified and resolved."
+    },
+    "links": {
+      "type": "array",
+      "description": "All internal link entries for this article.",
+      "items": {
+        "type": "object",
+        "required": ["placeholder", "suggested_url", "anchor_text"],
+        "additionalProperties": false,
+        "properties": {
+          "placeholder": {
+            "type": "string",
+            "description": "The original [LINK:...] marker as it appears in the article HTML.",
+            "pattern": "^\\[LINK:",
+            "examples": ["[LINK: /services/seo/ | anchor: SEO services Miami]"]
+          },
+          "suggested_url": {
+            "type": "string",
+            "description": "Best-guess URL based on site architecture. Requires human verification.",
+            "examples": ["/services/seo/", "/blog/podcast-production-cost/"]
+          },
+          "anchor_text": {
+            "type": "string",
+            "description": "Descriptive anchor text — never 'click here' or 'learn more'.",
+            "minLength": 3,
+            "maxLength": 80,
+            "examples": ["SEO services Miami", "podcast production cost guide"]
+          },
+          "link_type": {
+            "type": "string",
+            "enum": ["service", "blog", "resource", "cta", "other"],
+            "description": "Classification of link target for internal linking strategy.",
+            "default": "other"
+          },
+          "resolved": {
+            "type": "boolean",
+            "description": "True once a human has verified the URL is correct and live.",
+            "default": false
+          },
+          "resolved_url": {
+            "type": ["string", "null"],
+            "description": "Final, human-verified URL. Null until resolved.",
+            "default": null
+          },
+          "resolved_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Timestamp when this link was resolved.",
+            "default": null
+          },
+          "notes": {
+            "type": "string",
+            "description": "Optional editor notes about this link placement."
+          }
+        }
+      },
+      "minItems": 0
+    }
+  }
+}

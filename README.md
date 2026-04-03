@@ -1,159 +1,148 @@
-# AJ Digital Skill OS
+# AJ Digital SEO/AEO Engine
 
-**The operating system for building premium digital products at scale.**
+**A client-deployable SEO + AEO + GEO content intelligence system.**
 
-Built by [AJ Digital LLC](mailto:dev@audiojones.com) — a systems-driven agency that treats every project like infrastructure, not a one-off.
-
----
-
-## What This Is
-
-Skill OS is a proprietary knowledge architecture that standardizes how AJ Digital researches, designs, builds, and ships digital products. It is not a boilerplate. It is not a starter kit. It is a structured intelligence layer that sits between raw expertise and production output.
-
-Every skill, prompt, template, and standard in this repository exists to:
-
-1. **Eliminate guesswork** — decisions are pre-made at the systems level
-2. **Enforce quality** — standards are documented and referenced, not remembered
-3. **Accelerate delivery** — reusable patterns reduce project timelines by 40–60%
-4. **Power AI-assisted builds** — Claude Code and Anti-Gravity read these docs as behavioral contracts
-5. **Scale the agency** — new team members operate at senior level from day one
+Automates keyword research, opportunity scoring, article brief generation, schema injection, internal linking, and AI citation optimization — for any client, on any niche.
 
 ---
 
-## Why It Exists
+## What This Engine Does
 
-Most agencies rebuild from scratch every time. They rely on tribal knowledge, inconsistent processes, and ad-hoc decisions that degrade quality at scale.
+1. **Researches** — uses Perplexity to scan live SERPs, competitor gaps, PAA questions, and AI citation patterns
+2. **Scores** — normalizes every opportunity with a weighted formula (volume + difficulty + intent + local + AEO)
+3. **Generates** — uses Claude to write fully AEO-optimized articles that rank on Google and get cited by AI engines
+4. **Validates** — runs a 16-point quality gate before any content reaches a CMS
+5. **Distributes** — auto-generates social posts, email digests, GBP posts, and short-form scripts on publish
+6. **Optimizes** — weekly feedback loop tracks citation rate, CTR gaps, and rank-without-citation signals
 
-Skill OS solves this by encoding expertise into modular, versioned, enforceable documentation that both humans and AI systems consume.
+---
 
-The result: $10K–$100K+ websites built with the consistency of a product team, not a freelancer.
+## Inputs
+
+Every client deployment requires three input contract files:
+
+| File | Purpose |
+|------|---------|
+| `clients/{slug}/client-profile.json` | Brand identity, services, geo targets, author |
+| `clients/{slug}/brand-dna.json` | Voice, tone rules, CTAs, value proposition |
+| `clients/{slug}/deployment-config.json` | API targets, publish schedule, fast-track rules |
+
+Schemas for all three live in `schemas/`. Blank templates live in `clients/_template/`.
+
+---
+
+## Outputs
+
+Every engine run produces a fixed output set (defined in `docs/output-spec.md`):
+
+| Output | Schema |
+|--------|--------|
+| Opportunity matrix | `schemas/opportunity-matrix.schema.json` |
+| Topic map | `schemas/topic-map.schema.json` |
+| Article briefs | `schemas/page-brief.schema.json` |
+| AEO citation briefs | `schemas/ai-citation-brief.schema.json` |
+| Internal linking map | `schemas/internal-linking-map.schema.json` |
+| Publish queue | `schemas/publish-queue.schema.json` |
+| Schema pack (JSON-LD) | `schemas/schema-pack.schema.json` |
+
+---
+
+## How to Deploy for a New Client
+
+```bash
+# 1. Copy the blank client template
+cp -r clients/_template clients/your-client-slug
+
+# 2. Fill in the three input contracts
+#    clients/your-client-slug/client-profile.json
+#    clients/your-client-slug/brand-dna.json
+#    clients/your-client-slug/deployment-config.json
+
+# 3. Set environment variables (see .env.example)
+#    Required: CLIENT_SITE_URL, CLIENT_AUTHOR_NAME, CLIENT_LOCAL_CITIES + all API keys
+
+# 4. Import the n8n workflow
+#    workflows/n8n/seo-aeo-engine-workflow.json
+#    Replace REPLACE_* placeholders with your credential IDs
+
+# 5. Update the Set Brand Config node in n8n with values from client-profile.json
+
+# 6. Run W-01 (Intelligence Scan) manually to verify the pipeline
+```
 
 ---
 
 ## Repository Structure
 
 ```
-aj-digital-skill-os/
+aj-digital-seo-aeo-engine/
+├── clients/
+│   ├── _template/              ← Blank input contracts (copy to onboard)
+│   └── weareajdigital/         ← AJ Digital reference deployment
 │
-├── skills/                    # Core knowledge modules
-│   ├── web_building/          # Website architecture, design, CRO, SEO, AEO
-│   ├── branding/              # Brand strategy and identity systems
-│   ├── content_creation/      # Content strategy and production
-│   ├── automation/            # Workflow and business automation
-│   └── sales/                 # Sales systems and conversion
-│
-├── system/                    # Repo governance and architecture
-│   ├── repo_architecture.md   # Why this structure exists
-│   ├── workflow.md            # End-to-end execution process
-│   └── standards.md           # Naming, formatting, quality rules
-│
-├── prompts/                   # AI-ready prompt libraries
-│   ├── research/              # Deep research and synthesis
-│   ├── build/                 # System and repo creation
-│   └── audit/                 # CRO, SEO, AEO auditing
-│
-├── templates/                 # Reusable build templates
-│   ├── claude/                # Claude Code build templates
-│   └── anti_gravity/          # Anti-Gravity UI generation
-│
-├── docs/                      # Operational documentation
-│   ├── onboarding.md          # How to use this system
-│   └── roadmap.md             # Expansion plan
-│
-├── README.md                  # This file
-├── CLAUDE.md                  # AI behavior contract
-├── CHANGELOG.md               # Version history
-└── LICENSE.md                 # Proprietary license
+├── schemas/                    ← JSON Schemas: 3 inputs + 7 outputs
+├── workflows/n8n/              ← n8n workflow JSON + code node source
+├── skills/content_creation/seo/ ← Perplexity research skill
+├── prompts/                    ← AI prompt library
+├── docs/                       ← Output spec + weekly ops guide
+├── examples/                   ← Concrete output examples
+├── scripts/                    ← Repo health check + PR automation
+├── .env.example                ← All required environment variables
+└── CLAUDE.md                   ← AI behavior contract
 ```
 
 ---
 
-## How to Use It
+## Workflow Map
 
-### For Building a Website
+| ID | Workflow | Trigger | Runtime |
+|----|---------|---------|---------|
+| W-01 | Intelligence Scan | Monday 07:00 UTC | ~3–5 min |
+| W-02 | Article Generator | Webhook | ~90–120 sec |
+| W-03 | Distribution Engine | Sanity publish event | ~30 sec |
+| W-04 | Feedback Collector | Sunday 08:00 UTC | ~2–4 min |
+| W-05 | Content Mutation | 1st of month 09:00 UTC | ~5 min |
 
-1. Read `CLAUDE.md` — understand the behavioral contract
-2. Reference `skills/web_building/million_dollar_websites.md` — absorb the strategic framework
-3. Apply `skills/web_building/design_system.md` — enforce visual standards
-4. Use `templates/claude/site_build_template.md` — execute the build
-5. Run `prompts/audit/website_audit_prompt.md` — validate quality
-
-### For Adding a New Skill
-
-1. Read `docs/onboarding.md` — understand the contribution model
-2. Follow `system/standards.md` — enforce formatting and naming
-3. Create a new `.md` file in the appropriate `/skills/` subdirectory
-4. Document purpose, scope, principles, and actionable frameworks
-
-### For AI-Assisted Development
-
-1. Point Claude Code at `CLAUDE.md` as the system prompt
-2. Reference specific skill docs in your conversation context
-3. Use prompt files from `/prompts/` for structured tasks
-4. Use template files from `/templates/` for repeatable builds
+Full node-by-node spec: `workflows/n8n/seo-aeo-engine-workflow.md`
 
 ---
 
-## Philosophy
-
-### The Skill OS Concept
-
-Traditional agencies store knowledge in people's heads. When someone leaves, the knowledge leaves. When someone has an off day, quality drops.
-
-Skill OS treats expertise as software:
-- **Skills** are versioned modules of domain knowledge
-- **Prompts** are executable instructions that produce consistent output
-- **Templates** are scaffolds that enforce structural quality
-- **Standards** are the compiler — they reject anything that doesn't meet spec
-
-This is not documentation for documentation's sake. Every file in this repo is a working component of the production pipeline.
-
-### Design Philosophy
-
-- **Clarity over complexity** — if it needs a long explanation, it needs a redesign
-- **Systems over randomness** — repeatable processes beat one-time brilliance
-- **Reusability over one-offs** — build once, deploy many
-- **Premium quality over fast output** — speed comes from systems, not shortcuts
-- **Long-term scalability over hacks** — every decision compounds
-
----
-
-## Rules of the Repo
-
-1. **No placeholder content.** Every file must be immediately useful.
-2. **No orphan files.** Every file must be referenced by at least one other file or workflow.
-3. **No vague language.** Specifics over generalities. Numbers over adjectives.
-4. **No breaking changes without versioning.** Document what changed and why.
-5. **No style drift.** Follow `system/standards.md` or update the standard first.
-6. **Skills are modular.** They can be consumed independently or composed together.
-7. **Prompts are testable.** Run them. If the output is wrong, the prompt is wrong.
-8. **Templates are complete.** A template with TODOs is not a template.
-
----
-
-## Quick Start
+## Key Environment Variables
 
 ```bash
-# Clone the repo
-git clone https://github.com/AJDIGITALORG/aj-digital-skill-os.git
+# Client identity (set per deployment)
+CLIENT_SITE_URL=https://example.com
+CLIENT_BRAND_NAME=Example Brand
+CLIENT_AUTHOR_NAME=Jane Smith
+CLIENT_AUTHOR_TITLE=Founder & CEO
+CLIENT_PRIMARY_CITY=Austin
+CLIENT_LOCAL_CITIES=Austin,San Antonio,Houston
 
-# Read the architecture
-cat system/repo_architecture.md
-
-# Understand the workflow
-cat system/workflow.md
-
-# Start building
-# Point your AI tool at CLAUDE.md and reference the relevant skill docs
+# API keys
+PERPLEXITY_API_KEY=
+ANTHROPIC_API_KEY=
+OPENAI_API_KEY=
+GSC_SITE_URL=https://example.com
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REFRESH_TOKEN=
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+SANITY_PROJECT_ID=
+SANITY_DATASET=production
+SANITY_API_TOKEN=
 ```
 
 ---
 
-## Contact
+## Deployed Clients
 
-**AJ Digital LLC**
-Email: dev@audiojones.com
+| Client | Slug | Domain | Status |
+|--------|------|--------|--------|
+| AJ Digital | `weareajdigital` | weareajdigital.com | Active |
 
 ---
 
-*This is proprietary infrastructure. See LICENSE.md for terms.*
+**Engine version:** 2.0 — Phase 5 Productized | See `CHANGELOG.md`
+
+*Built by AJ Digital LLC. See LICENSE.md for terms.*

@@ -122,10 +122,12 @@ function intentComponent(intent) {
 }
 
 function localBoostComponent(intent, keyword) {
-  // Extra points for Miami/South Florida intent or explicit city in keyword
-  const localSignals = ['miami', 'fort lauderdale', 'west palm', 'south florida', 'hialeah', 'near me'];
+  // Extra points for local intent or explicit city mention in keyword.
+  // City list is sourced from CLIENT_LOCAL_CITIES env var (comma-separated).
+  const localCities = ($env.CLIENT_LOCAL_CITIES || $env.CLIENT_PRIMARY_CITY || 'miami')
+    .toLowerCase().split(',').map(c => c.trim()).filter(Boolean);
   const kwLower = keyword.toLowerCase();
-  const hasLocalSignal = localSignals.some(s => kwLower.includes(s));
+  const hasLocalSignal = localCities.some(s => kwLower.includes(s));
   if (intent === 'local' || hasLocalSignal) return 10;
   return 0;
 }
@@ -170,10 +172,11 @@ function priorityFromScore(score) {
 // Criteria: local keyword OR (low/very_low difficulty AND commercial/local intent)
 
 function isFastTrack(kw) {
+  // City list sourced from CLIENT_LOCAL_CITIES env var (comma-separated).
+  const localCities = ($env.CLIENT_LOCAL_CITIES || $env.CLIENT_PRIMARY_CITY || 'miami')
+    .toLowerCase().split(',').map(c => c.trim()).filter(Boolean);
   const isLocal    = kw.intent === 'local' ||
-    ['miami', 'fort lauderdale', 'west palm', 'south florida', 'hialeah'].some(
-      c => kw.keyword.toLowerCase().includes(c)
-    );
+    localCities.some(c => kw.keyword.toLowerCase().includes(c));
   const isLowKD    = ['very_low', 'low'].includes(kw.difficulty);
   const isCommercial = ['commercial', 'transactional', 'local'].includes(kw.intent);
 
@@ -291,7 +294,7 @@ for (const local of data.local_opportunities) {
     aeo_answer_gap:  null,
     aeo_citation_level: 'low',
 
-    local_city:      local.city || 'Miami',
+    local_city:      local.city || $env.CLIENT_PRIMARY_CITY || 'unknown',
     source:          'perplexity_local_scan',
     normalized_at:   new Date().toISOString()
   });
@@ -324,7 +327,7 @@ if (actionable.length === 0) {
 
 const matrixMeta = {
   generated_at:            new Date().toISOString(),
-  site_url:                'https://weareajdigital.com',
+  site_url:                $env.CLIENT_SITE_URL || 'https://example.com',
   summary,
   trending_queries:        data.trending_queries        || [],
   content_recommendations: data.content_recommendations || []

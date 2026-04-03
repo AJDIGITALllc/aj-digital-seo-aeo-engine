@@ -1,0 +1,156 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ajdigital.com/schemas/client-profile.schema.json",
+  "title": "Client Profile",
+  "description": "Brand identity, service offering, geographic targets, and author details for one client deployment of the AJ Digital SEO/AEO Engine.",
+  "type": "object",
+  "required": [
+    "slug",
+    "brand_name",
+    "site_url",
+    "niche",
+    "primary_city",
+    "local_cities",
+    "seed_topics",
+    "author"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "slug": {
+      "type": "string",
+      "description": "URL-safe, lowercase identifier for this client. Used as the directory name under clients/.",
+      "pattern": "^[a-z0-9-]+$",
+      "examples": ["weareajdigital", "acme-roofing", "miami-dental-group"]
+    },
+    "brand_name": {
+      "type": "string",
+      "description": "Full display name of the brand.",
+      "minLength": 1,
+      "examples": ["AJ Digital", "Acme Roofing Co.", "Miami Dental Group"]
+    },
+    "site_url": {
+      "type": "string",
+      "description": "Canonical base URL of the client's website (no trailing slash).",
+      "format": "uri",
+      "pattern": "^https?://",
+      "examples": ["https://weareajdigital.com", "https://acmeroofing.com"]
+    },
+    "niche": {
+      "type": "string",
+      "description": "One-line industry/niche descriptor used to focus keyword research.",
+      "minLength": 1,
+      "examples": [
+        "digital marketing agency",
+        "residential roofing contractor",
+        "cosmetic dentistry"
+      ]
+    },
+    "primary_city": {
+      "type": "string",
+      "description": "The single primary market city. Used as the default location anchor in prompts.",
+      "minLength": 1,
+      "examples": ["Miami", "Austin", "Chicago"]
+    },
+    "local_cities": {
+      "type": "array",
+      "description": "All geographic markets to target in keyword research and fast-track routing. Include primary_city as the first element.",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "examples": [
+        ["Miami", "Fort Lauderdale", "West Palm Beach", "South Florida", "Hialeah", "Brickell", "Coral Gables", "Aventura", "Doral"]
+      ]
+    },
+    "seed_topics": {
+      "type": "array",
+      "description": "Core service/topic clusters used to seed the Perplexity intelligence scan each week.",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "examples": [
+        ["SEO services", "web design", "digital marketing", "Google Ads", "social media management"]
+      ]
+    },
+    "services": {
+      "type": "array",
+      "description": "List of services offered. Used for internal linking, schema markup, and CTA targeting.",
+      "items": {
+        "type": "object",
+        "required": ["name", "url"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" },
+          "primary": {
+            "type": "boolean",
+            "description": "Mark true for the service that should receive the most internal links."
+          }
+        }
+      },
+      "default": []
+    },
+    "author": {
+      "type": "object",
+      "description": "Primary content author. Used in bylines, author schema, and AEO validator checks.",
+      "required": ["name", "title"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full legal name as it will appear in bylines and JSON-LD.",
+          "minLength": 1,
+          "examples": ["Audio Jones", "Jane Smith"]
+        },
+        "title": {
+          "type": "string",
+          "description": "Professional title as it will appear below the byline.",
+          "minLength": 1,
+          "examples": ["Founder & CEO", "Head of Content"]
+        },
+        "bio_short": {
+          "type": "string",
+          "description": "1–2 sentence author bio for article footers. 50–120 characters recommended.",
+          "maxLength": 300
+        },
+        "linkedin_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "LinkedIn profile URL for author schema markup."
+        },
+        "photo_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Absolute URL to author headshot (minimum 200×200px, WebP/JPEG)."
+        }
+      }
+    },
+    "schema_org": {
+      "type": "object",
+      "description": "Organization-level schema.org properties for JSON-LD generation.",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "schema.org type. Use LocalBusiness subtypes where applicable.",
+          "default": "Organization",
+          "examples": ["Organization", "LocalBusiness", "ProfessionalService", "Dentist"]
+        },
+        "founding_year": { "type": "integer", "minimum": 1800 },
+        "phone": { "type": "string" },
+        "address": {
+          "type": "object",
+          "properties": {
+            "street": { "type": "string" },
+            "city": { "type": "string" },
+            "state": { "type": "string" },
+            "zip": { "type": "string" },
+            "country": { "type": "string", "default": "US" }
+          }
+        },
+        "social_profiles": {
+          "type": "array",
+          "items": { "type": "string", "format": "uri" },
+          "description": "List of social profile URLs for sameAs schema property."
+        }
+      }
+    }
+  }
+}

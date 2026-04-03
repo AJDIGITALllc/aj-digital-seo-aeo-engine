@@ -1,0 +1,200 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ajdigital.com/schemas/schema-pack.schema.json",
+  "title": "Schema Pack (JSON-LD)",
+  "description": "All JSON-LD structured data blocks for a single published article. Injected into <head> by the CMS renderer.",
+  "type": "object",
+  "required": ["article_slug", "generated_at", "schema_types"],
+  "additionalProperties": false,
+  "properties": {
+    "article_slug": {
+      "type": "string",
+      "description": "Slug of the article this schema pack belongs to.",
+      "minLength": 1
+    },
+    "article_id": {
+      "type": "string",
+      "description": "Sanity document ID of the article (populated after publish)."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this pack was generated."
+    },
+    "schema_types": {
+      "type": "array",
+      "description": "List of schema.org @types included in this pack.",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "examples": [["Article", "FAQPage", "BreadcrumbList", "Person", "Organization"]]
+    },
+    "article_schema": {
+      "type": "object",
+      "description": "Article or BlogPosting JSON-LD block.",
+      "required": ["@context", "@type", "headline", "author", "publisher", "datePublished", "url"],
+      "properties": {
+        "@context": { "type": "string", "const": "https://schema.org" },
+        "@type": { "type": "string", "enum": ["Article", "BlogPosting", "NewsArticle"] },
+        "headline": { "type": "string", "maxLength": 110 },
+        "description": { "type": "string", "maxLength": 300 },
+        "url": { "type": "string", "format": "uri" },
+        "datePublished": { "type": "string", "format": "date" },
+        "dateModified": { "type": "string", "format": "date" },
+        "wordCount": { "type": "integer", "minimum": 1 },
+        "author": {
+          "type": "object",
+          "required": ["@type", "name"],
+          "properties": {
+            "@type": { "type": "string", "const": "Person" },
+            "name": { "type": "string" },
+            "url": { "type": "string", "format": "uri" },
+            "jobTitle": { "type": "string" }
+          }
+        },
+        "publisher": {
+          "type": "object",
+          "required": ["@type", "name"],
+          "properties": {
+            "@type": { "type": "string", "enum": ["Organization", "LocalBusiness"] },
+            "name": { "type": "string" },
+            "url": { "type": "string", "format": "uri" },
+            "logo": {
+              "type": "object",
+              "properties": {
+                "@type": { "type": "string", "const": "ImageObject" },
+                "url": { "type": "string", "format": "uri" }
+              }
+            }
+          }
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "@type": { "type": "string", "const": "ImageObject" },
+            "url": { "type": "string", "format": "uri" },
+            "width": { "type": "integer" },
+            "height": { "type": "integer" }
+          }
+        },
+        "mainEntityOfPage": {
+          "type": "object",
+          "properties": {
+            "@type": { "type": "string", "const": "WebPage" },
+            "@id": { "type": "string", "format": "uri" }
+          }
+        }
+      }
+    },
+    "faq_schema": {
+      "type": "object",
+      "description": "FAQPage JSON-LD block built from article faq_pairs.",
+      "required": ["@context", "@type", "mainEntity"],
+      "properties": {
+        "@context": { "type": "string", "const": "https://schema.org" },
+        "@type": { "type": "string", "const": "FAQPage" },
+        "mainEntity": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["@type", "name", "acceptedAnswer"],
+            "properties": {
+              "@type": { "type": "string", "const": "Question" },
+              "name": { "type": "string", "description": "The FAQ question text." },
+              "acceptedAnswer": {
+                "type": "object",
+                "required": ["@type", "text"],
+                "properties": {
+                  "@type": { "type": "string", "const": "Answer" },
+                  "text": { "type": "string", "description": "The FAQ answer (40–75 words)." }
+                }
+              }
+            }
+          },
+          "minItems": 3
+        }
+      }
+    },
+    "breadcrumb_schema": {
+      "type": "object",
+      "description": "BreadcrumbList JSON-LD block.",
+      "required": ["@context", "@type", "itemListElement"],
+      "properties": {
+        "@context": { "type": "string", "const": "https://schema.org" },
+        "@type": { "type": "string", "const": "BreadcrumbList" },
+        "itemListElement": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["@type", "position", "name", "item"],
+            "properties": {
+              "@type": { "type": "string", "const": "ListItem" },
+              "position": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string" },
+              "item": { "type": "string", "format": "uri" }
+            }
+          },
+          "minItems": 2
+        }
+      }
+    },
+    "author_schema": {
+      "type": "object",
+      "description": "Person JSON-LD for the article author.",
+      "required": ["@context", "@type", "name"],
+      "properties": {
+        "@context": { "type": "string", "const": "https://schema.org" },
+        "@type": { "type": "string", "const": "Person" },
+        "name": { "type": "string" },
+        "jobTitle": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "image": { "type": "string", "format": "uri" },
+        "sameAs": {
+          "type": "array",
+          "items": { "type": "string", "format": "uri" }
+        },
+        "worksFor": {
+          "type": "object",
+          "properties": {
+            "@type": { "type": "string" },
+            "name": { "type": "string" },
+            "url": { "type": "string", "format": "uri" }
+          }
+        }
+      }
+    },
+    "organization_schema": {
+      "type": "object",
+      "description": "Organization or LocalBusiness JSON-LD for the publishing entity.",
+      "required": ["@context", "@type", "name", "url"],
+      "properties": {
+        "@context": { "type": "string", "const": "https://schema.org" },
+        "@type": { "type": "string", "enum": ["Organization", "LocalBusiness", "ProfessionalService", "Dentist", "LegalService"] },
+        "name": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "telephone": { "type": "string" },
+        "address": {
+          "type": "object",
+          "properties": {
+            "@type": { "type": "string", "const": "PostalAddress" },
+            "streetAddress": { "type": "string" },
+            "addressLocality": { "type": "string" },
+            "addressRegion": { "type": "string" },
+            "postalCode": { "type": "string" },
+            "addressCountry": { "type": "string" }
+          }
+        },
+        "sameAs": {
+          "type": "array",
+          "items": { "type": "string", "format": "uri" }
+        },
+        "logo": {
+          "type": "object",
+          "properties": {
+            "@type": { "type": "string", "const": "ImageObject" },
+            "url": { "type": "string", "format": "uri" }
+          }
+        }
+      }
+    }
+  }
+}

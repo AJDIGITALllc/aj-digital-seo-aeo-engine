@@ -1,0 +1,186 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ajdigital.com/schemas/brand-dna.schema.json",
+  "title": "Brand DNA",
+  "description": "Voice, tone rules, CTAs, value proposition, and content guardrails injected into all Claude content generation prompts.",
+  "type": "object",
+  "required": [
+    "voice",
+    "tone_rules",
+    "value_proposition",
+    "primary_cta"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "voice": {
+      "type": "object",
+      "description": "Brand voice definition — how the brand sounds across all content.",
+      "required": ["adjectives", "style_statement"],
+      "additionalProperties": false,
+      "properties": {
+        "adjectives": {
+          "type": "array",
+          "description": "3–6 words that describe the brand's personality.",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 2,
+          "maxItems": 8,
+          "examples": [["authoritative", "approachable", "direct", "results-driven"]]
+        },
+        "style_statement": {
+          "type": "string",
+          "description": "One sentence that defines the brand's writing style. Used verbatim in Claude prompts.",
+          "minLength": 20,
+          "examples": [
+            "Write like a senior consultant explaining strategy to a smart business owner — confident, clear, no jargon, always tied to outcomes."
+          ]
+        },
+        "reading_level": {
+          "type": "string",
+          "description": "Target reading level for generated content.",
+          "enum": ["8th_grade", "10th_grade", "professional", "technical"],
+          "default": "10th_grade"
+        },
+        "sentence_length": {
+          "type": "string",
+          "description": "Preferred sentence length pattern.",
+          "enum": ["short", "mixed", "long"],
+          "default": "mixed"
+        }
+      }
+    },
+    "tone_rules": {
+      "type": "array",
+      "description": "Explicit do/do-not writing rules. Injected as a bullet list into the Claude system prompt.",
+      "items": {
+        "type": "object",
+        "required": ["rule", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "rule": {
+            "type": "string",
+            "description": "The tone rule as written in the prompt.",
+            "minLength": 5
+          },
+          "type": {
+            "type": "string",
+            "enum": ["do", "do_not"],
+            "description": "Whether this is a positive instruction or a prohibition."
+          }
+        }
+      },
+      "minItems": 3,
+      "examples": [
+        [
+          { "rule": "Lead with the specific outcome before explaining the process", "type": "do" },
+          { "rule": "Use passive voice — always assign agency", "type": "do_not" },
+          { "rule": "Name frameworks and methodologies with proper nouns", "type": "do" },
+          { "rule": "Hedge claims with 'might', 'could', 'may' unless genuinely uncertain", "type": "do_not" }
+        ]
+      ]
+    },
+    "value_proposition": {
+      "type": "object",
+      "description": "Core value prop used in CTAs, hero text, and closing arguments.",
+      "required": ["headline", "sub"],
+      "additionalProperties": false,
+      "properties": {
+        "headline": {
+          "type": "string",
+          "description": "One-line primary value prop (under 60 chars).",
+          "maxLength": 80,
+          "examples": ["We build websites that rank, convert, and grow."]
+        },
+        "sub": {
+          "type": "string",
+          "description": "Supporting sentence (under 120 chars). Backs up the headline.",
+          "maxLength": 160,
+          "examples": ["Full-stack digital growth for businesses that are serious about results."]
+        },
+        "differentiators": {
+          "type": "array",
+          "description": "2–4 bullet-point differentiators. Used in schema markup and comparison sections.",
+          "items": { "type": "string", "minLength": 5 },
+          "minItems": 1,
+          "maxItems": 6
+        }
+      }
+    },
+    "primary_cta": {
+      "type": "object",
+      "description": "Default call-to-action injected at the end of every article.",
+      "required": ["text", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "CTA button/link text.",
+          "minLength": 3,
+          "maxLength": 60,
+          "examples": ["Get a Free Strategy Session", "Book a Free Audit"]
+        },
+        "url": {
+          "type": "string",
+          "description": "Destination URL. Can be absolute or root-relative.",
+          "examples": ["/contact", "https://weareajdigital.com/contact"]
+        },
+        "context_sentence": {
+          "type": "string",
+          "description": "The sentence immediately before the CTA button. Should create desire and reduce friction.",
+          "maxLength": 200,
+          "examples": [
+            "Ready to turn your website into your best-performing sales rep?"
+          ]
+        }
+      }
+    },
+    "secondary_ctas": {
+      "type": "array",
+      "description": "Alternative CTAs for mid-article placement or service-specific pages.",
+      "items": {
+        "type": "object",
+        "required": ["text", "url", "context"],
+        "additionalProperties": false,
+        "properties": {
+          "text": { "type": "string", "minLength": 3, "maxLength": 60 },
+          "url": { "type": "string" },
+          "context": {
+            "type": "string",
+            "description": "When to use this CTA (e.g., 'after SEO sections', 'on local pages')."
+          }
+        }
+      },
+      "default": []
+    },
+    "forbidden_phrases": {
+      "type": "array",
+      "description": "Words and phrases Claude must never use. Checked by AEO validator.",
+      "items": { "type": "string" },
+      "default": [],
+      "examples": [["game-changing", "revolutionary", "synergy", "leverage (as a verb)", "utilize"]]
+    },
+    "required_phrases": {
+      "type": "array",
+      "description": "Phrases or named frameworks that must appear in every article (e.g., brand-owned methodology names).",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "content_disclaimers": {
+      "type": "array",
+      "description": "Legal or editorial disclaimers to append to specific content types.",
+      "items": {
+        "type": "object",
+        "required": ["applies_to", "text"],
+        "additionalProperties": false,
+        "properties": {
+          "applies_to": {
+            "type": "string",
+            "description": "Content type or topic this disclaimer applies to.",
+            "examples": ["financial advice", "medical content", "case study results"]
+          },
+          "text": { "type": "string", "minLength": 10 }
+        }
+      },
+      "default": []
+    }
+  }
+}

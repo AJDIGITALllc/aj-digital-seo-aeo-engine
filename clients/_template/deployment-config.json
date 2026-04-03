@@ -1,0 +1,57 @@
+{
+  "_comment": "Copy this file to clients/{your-slug}/deployment-config.json and fill in all values. Remove this comment before deploying. Never commit n8n_credential_ids to version control.",
+  "$schema": "../../schemas/deployment-config.schema.json",
+
+  "sanity": {
+    "project_id": "REPLACE_SANITY_PROJECT_ID",
+    "dataset": "production",
+    "api_version": "2024-01-01",
+    "content_type": "article",
+    "brief_type": "contentBrief"
+  },
+  "schedule": {
+    "intelligence_scan": "0 7 * * 1",
+    "feedback_collector": "0 8 * * 0",
+    "content_mutation": "0 9 1 * *",
+    "articles_per_week": 3
+  },
+  "fast_track": {
+    "enabled": true,
+    "min_aeo_score": 60,
+    "max_warnings": 3,
+    "auto_approve_local": true,
+    "auto_approve_low_kd_commercial": true
+  },
+  "telegram": {
+    "enabled": true,
+    "alert_on_kill": true,
+    "alert_on_publish": true,
+    "alert_on_feedback": true
+  },
+  "gsc": {
+    "site_url": "https://yourdomain.com/",
+    "lookback_days_this_week": 7,
+    "lookback_days_last_week": 7,
+    "row_limit": 1000
+  },
+  "distribution": {
+    "social_posts": true,
+    "email_digest": true,
+    "gbp_post": false,
+    "short_form_script": false,
+    "platforms": ["linkedin", "instagram"]
+  },
+  "content_mutation": {
+    "enabled": true,
+    "articles_per_run": 3,
+    "min_article_age_days": 60
+  },
+  "n8n_credential_ids": {
+    "perplexity_api": "REPLACE_PERPLEXITY_CREDENTIAL_ID",
+    "anthropic_api": "REPLACE_ANTHROPIC_CREDENTIAL_ID",
+    "openai_api": "REPLACE_OPENAI_CREDENTIAL_ID",
+    "google_oauth": "REPLACE_GOOGLE_OAUTH_CREDENTIAL_ID",
+    "telegram_api": "REPLACE_TELEGRAM_CREDENTIAL_ID",
+    "sanity_api": "REPLACE_SANITY_CREDENTIAL_ID"
+  }
+}

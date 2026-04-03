@@ -1,0 +1,253 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ajdigital.com/schemas/deployment-config.schema.json",
+  "title": "Deployment Config",
+  "description": "API targets, publish schedule, fast-track rules, and integration credentials for one client deployment of the AJ Digital SEO/AEO Engine.",
+  "type": "object",
+  "required": [
+    "sanity",
+    "schedule",
+    "fast_track"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "sanity": {
+      "type": "object",
+      "description": "Sanity CMS connection settings.",
+      "required": ["project_id", "dataset"],
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "description": "Sanity project ID. Retrieve from sanity.io/manage.",
+          "pattern": "^[a-z0-9]+$",
+          "examples": ["abc123xy"]
+        },
+        "dataset": {
+          "type": "string",
+          "description": "Sanity dataset name.",
+          "default": "production",
+          "examples": ["production", "staging"]
+        },
+        "api_version": {
+          "type": "string",
+          "description": "Sanity API version date string.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "default": "2024-01-01"
+        },
+        "content_type": {
+          "type": "string",
+          "description": "Sanity document type for published articles.",
+          "default": "article"
+        },
+        "brief_type": {
+          "type": "string",
+          "description": "Sanity document type for content briefs.",
+          "default": "contentBrief"
+        }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "description": "Cron-style schedule for each automated workflow.",
+      "additionalProperties": false,
+      "properties": {
+        "intelligence_scan": {
+          "type": "string",
+          "description": "W-01 cron expression (UTC). Default: Monday 07:00.",
+          "default": "0 7 * * 1",
+          "examples": ["0 7 * * 1"]
+        },
+        "feedback_collector": {
+          "type": "string",
+          "description": "W-04 cron expression (UTC). Default: Sunday 08:00.",
+          "default": "0 8 * * 0",
+          "examples": ["0 8 * * 0"]
+        },
+        "content_mutation": {
+          "type": "string",
+          "description": "W-05 cron expression (UTC). Default: 1st of month 09:00.",
+          "default": "0 9 1 * *",
+          "examples": ["0 9 1 * *"]
+        },
+        "articles_per_week": {
+          "type": "integer",
+          "description": "Maximum number of articles to generate per W-01 run.",
+          "minimum": 1,
+          "maximum": 20,
+          "default": 3
+        }
+      }
+    },
+    "fast_track": {
+      "type": "object",
+      "description": "Rules for auto-publish bypass (W-02 fast-track routing).",
+      "required": ["enabled"],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Master switch. Set false to force all articles through manual approval.",
+          "default": true
+        },
+        "min_aeo_score": {
+          "type": "integer",
+          "description": "AEO score floor. Articles below this never fast-track regardless of other criteria.",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 60
+        },
+        "max_warnings": {
+          "type": "integer",
+          "description": "Maximum validator warnings allowed for fast-track. Articles with >= this count go to manual approval.",
+          "minimum": 0,
+          "maximum": 20,
+          "default": 3
+        },
+        "auto_approve_local": {
+          "type": "boolean",
+          "description": "Automatically fast-track articles targeting local keywords (intent: local).",
+          "default": true
+        },
+        "auto_approve_low_kd_commercial": {
+          "type": "boolean",
+          "description": "Automatically fast-track articles with difficulty very_low/low AND commercial/transactional intent.",
+          "default": true
+        }
+      }
+    },
+    "telegram": {
+      "type": "object",
+      "description": "Telegram bot settings for manual approval workflow and status alerts.",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "alert_on_kill": {
+          "type": "boolean",
+          "description": "Send Telegram message when validator kills an article.",
+          "default": true
+        },
+        "alert_on_publish": {
+          "type": "boolean",
+          "description": "Send Telegram confirmation when article publishes.",
+          "default": true
+        },
+        "alert_on_feedback": {
+          "type": "boolean",
+          "description": "Send weekly feedback summary to Telegram.",
+          "default": true
+        }
+      }
+    },
+    "gsc": {
+      "type": "object",
+      "description": "Google Search Console settings for W-04 feedback collection.",
+      "additionalProperties": false,
+      "properties": {
+        "site_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Property URL as registered in GSC (must match exactly, including trailing slash if present).",
+          "examples": ["https://weareajdigital.com/", "sc-domain:weareajdigital.com"]
+        },
+        "lookback_days_this_week": {
+          "type": "integer",
+          "description": "Days of GSC data in the 'this week' window.",
+          "minimum": 1,
+          "maximum": 90,
+          "default": 7
+        },
+        "lookback_days_last_week": {
+          "type": "integer",
+          "description": "Days of GSC data in the 'last week' comparison window.",
+          "minimum": 1,
+          "maximum": 90,
+          "default": 7
+        },
+        "row_limit": {
+          "type": "integer",
+          "description": "Maximum rows returned from GSC API per call.",
+          "minimum": 100,
+          "maximum": 25000,
+          "default": 1000
+        }
+      }
+    },
+    "distribution": {
+      "type": "object",
+      "description": "W-03 distribution settings — which channels to push on article publish.",
+      "additionalProperties": false,
+      "properties": {
+        "social_posts": {
+          "type": "boolean",
+          "description": "Generate social post copy on publish.",
+          "default": true
+        },
+        "email_digest": {
+          "type": "boolean",
+          "description": "Include article in next email digest.",
+          "default": true
+        },
+        "gbp_post": {
+          "type": "boolean",
+          "description": "Generate Google Business Profile post copy.",
+          "default": false
+        },
+        "short_form_script": {
+          "type": "boolean",
+          "description": "Generate a short-form video script (Reels/TikTok) on publish.",
+          "default": false
+        },
+        "platforms": {
+          "type": "array",
+          "description": "Social platforms to generate copy for.",
+          "items": {
+            "type": "string",
+            "enum": ["linkedin", "instagram", "facebook", "twitter_x", "tiktok"]
+          },
+          "default": ["linkedin", "instagram"]
+        }
+      }
+    },
+    "content_mutation": {
+      "type": "object",
+      "description": "W-05 monthly content mutation settings.",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "articles_per_run": {
+          "type": "integer",
+          "description": "Max articles to mutate per monthly run.",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 3
+        },
+        "min_article_age_days": {
+          "type": "integer",
+          "description": "Only mutate articles older than this many days.",
+          "minimum": 14,
+          "default": 60
+        }
+      }
+    },
+    "n8n_credential_ids": {
+      "type": "object",
+      "description": "n8n credential IDs to replace REPLACE_* placeholders in the workflow JSON. These are instance-specific and should NOT be committed to version control.",
+      "additionalProperties": false,
+      "properties": {
+        "perplexity_api": { "type": "string", "description": "Credential ID for Perplexity API HTTP node." },
+        "anthropic_api": { "type": "string", "description": "Credential ID for Anthropic Claude node." },
+        "openai_api": { "type": "string", "description": "Credential ID for OpenAI node." },
+        "google_oauth": { "type": "string", "description": "Credential ID for Google OAuth2 (GSC)." },
+        "telegram_api": { "type": "string", "description": "Credential ID for Telegram Bot." },
+        "sanity_api": { "type": "string", "description": "Credential ID for Sanity HTTP node." }
+      }
+    }
+  }
+}

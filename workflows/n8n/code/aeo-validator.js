@@ -167,11 +167,12 @@ if (h2Sections.length > 0 && scores.answer_first_ratio < 0.5) {
 
 // ─── BLOCK 6: AUTHOR BLOCK ────────────────────────────────────────────────────
 
-scores.has_author_block = html.includes('Audio Jones') ? 1 : 0;
+const authorName = $env.CLIENT_AUTHOR_NAME || '';
+scores.has_author_block = (authorName && html.includes(authorName)) ? 1 : 0;
 if (!scores.has_author_block) {
   fail('MISSING_AUTHOR_BLOCK',
-    '"Audio Jones" not found in article body. ' +
-    'Add author block after H1: "By Audio Jones | Podcast Producer & AI Consultant, AJ Digital"');
+    `Author name "${authorName || 'CLIENT_AUTHOR_NAME'}" not found in article body. ` +
+    'Add author byline block immediately after the H1 heading.');
 }
 
 // ─── BLOCK 7: WORD COUNT ─────────────────────────────────────────────────────

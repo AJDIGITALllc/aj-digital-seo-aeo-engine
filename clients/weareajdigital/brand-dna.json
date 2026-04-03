@@ -1,0 +1,81 @@
+{
+  "$schema": "../../schemas/brand-dna.schema.json",
+
+  "voice": {
+    "adjectives": ["authoritative", "approachable", "direct", "results-driven", "systems-thinker"],
+    "style_statement": "Write like a senior digital strategist explaining growth tactics to a smart business owner — confident, precise, no agency jargon, every claim tied to a measurable outcome.",
+    "reading_level": "10th_grade",
+    "sentence_length": "mixed"
+  },
+  "tone_rules": [
+    { "rule": "Lead with the specific outcome or result before explaining the process", "type": "do" },
+    { "rule": "Use passive voice — always assign agency (Google does X, not X is done)", "type": "do_not" },
+    { "rule": "Name proprietary frameworks with proper nouns (e.g., The AEO Content Loop, The Authority Stack)", "type": "do" },
+    { "rule": "Hedge genuine claims with 'might' or 'could' unless the statement is factually certain", "type": "do_not" },
+    { "rule": "Open every H2 section with a direct, 1-2 sentence answer to the implied search question", "type": "do" },
+    { "rule": "Use filler openings: 'In today's digital landscape', 'It goes without saying', 'At the end of the day'", "type": "do_not" },
+    { "rule": "Reference real metrics, timeframes, and percentages whenever possible to anchor claims", "type": "do" },
+    { "rule": "Use first-person plural (we, our) when speaking as the agency", "type": "do" },
+    { "rule": "Use em-dashes for parenthetical clarity — it's the AJ Digital rhythm — not parentheses", "type": "do" },
+    { "rule": "Oversell or make guarantees about rankings, traffic, or revenue results", "type": "do_not" }
+  ],
+  "value_proposition": {
+    "headline": "We build websites that rank, convert, and grow.",
+    "sub": "Full-stack digital growth for South Florida businesses that are serious about results.",
+    "differentiators": [
+      "SEO + AEO combined strategy — we optimize for Google and AI engines simultaneously",
+      "Content that earns citations from ChatGPT, Perplexity, and Google AI Overviews",
+      "Conversion-first design — every page is built to turn visitors into leads",
+      "Miami-based team with 500+ client campaigns across South Florida"
+    ]
+  },
+  "primary_cta": {
+    "text": "Get a Free Strategy Session",
+    "url": "/contact",
+    "context_sentence": "Ready to turn your website into your best-performing sales rep?"
+  },
+  "secondary_ctas": [
+    {
+      "text": "See Our SEO Results",
+      "url": "/case-studies",
+      "context": "Use after statistics, case study references, or results sections"
+    },
+    {
+      "text": "Get a Free SEO Audit",
+      "url": "/seo-audit",
+      "context": "Use in SEO-topic articles and local search pages"
+    },
+    {
+      "text": "View Our Web Design Work",
+      "url": "/portfolio",
+      "context": "Use in web design and CRO topic articles"
+    }
+  ],
+  "forbidden_phrases": [
+    "game-changing",
+    "revolutionary",
+    "synergy",
+    "leverage (as a verb)",
+    "utilize",
+    "cutting-edge",
+    "best-in-class",
+    "world-class",
+    "guru",
+    "ninja",
+    "rockstar",
+    "thought leader",
+    "holistic approach",
+    "seamless experience",
+    "move the needle",
+    "low-hanging fruit"
+  ],
+  "required_phrases": [
+    "AJ Digital"
+  ],
+  "content_disclaimers": [
+    {
+      "applies_to": "case study results",
+      "text": "Results may vary based on industry, competition level, existing domain authority, and campaign budget. Past performance does not guarantee future results."
+    }
+  ]
+}
