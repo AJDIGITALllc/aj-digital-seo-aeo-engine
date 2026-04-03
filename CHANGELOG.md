@@ -16,6 +16,34 @@ Versions are tagged at the point of commit, not at the point of authoring.
 
 ---
 
+## [1.7.0] — 2026-04-03
+
+**Summary:** Merged scaffold-v2 content into standalone repo at `C:\dev\aj-digital-seo-aeo-engine`. Added schemas, examples, SEO prompts, new templates, and the importable n8n handoff JSON. Repo is now fully isolated from parent `aj-digital-skill-os` monorepo.
+
+### Added
+
+- `schemas/ai-citation-brief.schema.json` — JSON schema for AI citation brief output
+- `schemas/opportunity-matrix.schema.json` — JSON schema for scored opportunity matrix
+- `schemas/page-brief.schema.json` — JSON schema for structured page brief
+- `schemas/topic-map.schema.json` — JSON schema for topic cluster map
+- `examples/sample-brief.md` — Example page brief output
+- `examples/sample-input.json` — Example brand config input payload
+- `examples/sample-output.json` — Example scored research output payload
+- `prompts/chatgpt/strategy-synthesizer.prompt.md` — GPT strategy synthesis prompt
+- `prompts/claude/page-brief-expander.prompt.md` — Claude page brief expansion prompt
+- `prompts/perplexity/seo-aeo-research-operator.prompt.md` — Perplexity research operator prompt
+- `skills/content_creation/seo/perplexity-seo-aeo-research-operator.skill.md` — SEO/AEO skill definition for the research operator
+- `docs/architecture.md` — Engine architecture documentation
+- `docs/output-schema.md` — Output schema reference
+- `docs/repo-conventions.md` — Repository conventions guide
+- `docs/workflow.md` — Engine-specific workflow documentation
+- `templates/content-brief.md` — Content brief template
+- `templates/internal-link-plan.csv` — Internal link planning template
+- `templates/opportunity-matrix.csv` — Opportunity scoring matrix template
+- `workflows/n8n/seo-aeo-engine-handoff.json` — Importable n8n workflow JSON scaffold
+
+---
+
 ## [1.6.0] — 2026-04-03
 
 **Summary:** Added the n8n workflow spec for the full SEO/AEO research and approval pipeline. Defines two-workflow architecture (Research Run + Approval Handler), 22 nodes across both workflows, scoring algorithm, Telegram approval routing, and Sanity/GitHub/Cloudflare persistence. Updated `.env.example` with all workflow dependencies.
