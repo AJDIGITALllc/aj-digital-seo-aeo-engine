@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ajdigital.llc/schemas/topic-map.schema.json",
+  "title": "TopicMap",
+  "description": "Pillar-cluster topic map for SEO/AEO content architecture.",
+  "type": "object",
+  "required": ["generated_at", "site_url", "pillars"],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "site_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "pillars": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "slug", "primary_keyword", "clusters"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Pillar page title."
+          },
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "primary_keyword": {
+            "type": "string"
+          },
+          "intent": {
+            "type": "string",
+            "enum": ["informational", "navigational", "commercial", "transactional"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["planned", "in-progress", "published", "needs-update"]
+          },
+          "clusters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["title", "slug", "primary_keyword"],
+              "properties": {
+                "title": { "type": "string" },
+                "slug": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?:\\/[a-z0-9]+(?:-[a-z0-9]+)*)*$"
+                },
+                "primary_keyword": { "type": "string" },
+                "supporting_keywords": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "intent": {
+                  "type": "string",
+                  "enum": ["informational", "navigational", "commercial", "transactional"]
+                },
+                "aeo_questions": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Direct questions this page should answer for AI engines."
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["planned", "in-progress", "published", "needs-update"]
+                },
+                "internal_links_to": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Slugs this cluster page should link to."
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

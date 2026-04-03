@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ajdigital.llc/schemas/page-brief.schema.json",
+  "title": "PageBrief",
+  "description": "Content brief for a single SEO/AEO-optimized page.",
+  "type": "object",
+  "required": ["title", "slug", "primary_keyword", "meta", "outline"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 70,
+      "description": "Page title (also used as H1). Front-load the primary keyword."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?:\\/[a-z0-9]+(?:-[a-z0-9]+)*)*$"
+    },
+    "primary_keyword": { "type": "string" },
+    "secondary_keywords": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "intent": {
+      "type": "string",
+      "enum": ["informational", "navigational", "commercial", "transactional"]
+    },
+    "meta": {
+      "type": "object",
+      "required": ["title", "description"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "Meta title tag."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 155,
+          "description": "Meta description tag."
+        }
+      },
+      "additionalProperties": false
+    },
+    "word_count_target": {
+      "type": "integer",
+      "minimum": 300
+    },
+    "aeo_questions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Questions this page must answer directly in the first 1–2 sentences of each section."
+    },
+    "schema_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Article", "FAQPage", "HowTo", "Service", "LocalBusiness", "BreadcrumbList", "Organization", "WebPage"]
+      }
+    },
+    "outline": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["heading", "level"],
+        "properties": {
+          "heading": { "type": "string" },
+          "level": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 4
+          },
+          "notes": { "type": "string" },
+          "aeo_answer": {
+            "type": "string",
+            "description": "The direct, extractable answer AI engines should find here."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "internal_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["anchor_text", "target_slug"],
+        "properties": {
+          "anchor_text": { "type": "string" },
+          "target_slug": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "cta": {
+      "type": "object",
+      "properties": {
+        "primary_text": { "type": "string" },
+        "primary_url": { "type": "string" },
+        "secondary_text": { "type": "string" },
+        "secondary_url": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "in-review", "approved", "published"]
+    }
+  },
+  "additionalProperties": false
+}

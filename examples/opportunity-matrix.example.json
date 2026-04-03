@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-04-03T08:00:00Z",
+  "site_url": "https://ajdigital.llc",
+  "research_query": "seo agency for saas companies",
+  "opportunities": [
+    {
+      "keyword": "seo agency for saas",
+      "intent": "commercial",
+      "monthly_searches": 1200,
+      "difficulty": 42,
+      "seo_score": 8.2,
+      "aeo_score": 7.5,
+      "priority": "critical",
+      "current_rank": null,
+      "competitor_urls": [
+        "https://www.example-seo-agency.com/saas-seo",
+        "https://www.another-agency.com/saas"
+      ],
+      "recommended_action": "create",
+      "notes": "No current page targeting this. High commercial intent. Featured snippet available."
+    },
+    {
+      "keyword": "what is aeo in marketing",
+      "intent": "informational",
+      "monthly_searches": 880,
+      "difficulty": 28,
+      "seo_score": 7.1,
+      "aeo_score": 9.2,
+      "priority": "critical",
+      "current_rank": null,
+      "competitor_urls": [],
+      "recommended_action": "create",
+      "notes": "Strong AEO signal. Perplexity and ChatGPT both answer this. First-mover opportunity."
+    },
+    {
+      "keyword": "seo vs aeo difference",
+      "intent": "informational",
+      "monthly_searches": 390,
+      "difficulty": 18,
+      "seo_score": 6.8,
+      "aeo_score": 8.9,
+      "priority": "high",
+      "current_rank": null,
+      "competitor_urls": [],
+      "recommended_action": "create",
+      "notes": "Cluster page supporting the AEO pillar. Direct Q&A format recommended."
+    }
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "name": "AJ Digital — SEO/AEO Authority Engine",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "cronExpression", "expression": "0 7 * * 1" }]
+        }
+      },
+      "id": "node-w01-trigger",
+      "name": "W01: Monday Intel Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [100, 300],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://searchconsole.googleapis.com/webmasters/v3/sites/{{ $env.GSC_SITE_URL_ENCODED }}/searchAnalytics/query",
+        "authentication": "oAuth2",
+        "oAuth2": { "id": "REPLACE_WITH_GSC_CREDENTIAL_ID", "name": "Google Search Console" },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "startDate", "value": "={{ $now.minus({days: 28}).format('yyyy-MM-dd') }}" },
+            { "name": "endDate",   "value": "={{ $now.format('yyyy-MM-dd') }}" },
+            { "name": "dimensions", "value": "=[\"query\", \"page\"]" },
+            { "name": "rowLimit",  "value": "=50" }
+          ]
+        }
+      },
+      "id": "node-gsc-fetch",
+      "name": "GSC: Top Queries",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [300, 300],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.perplexity.ai/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.PERPLEXITY_API_KEY }}" },
+            { "name": "Content-Type",  "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.1-sonar-large-128k-online\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are an expert SEO and AEO strategist. Return only valid JSON. No markdown. No commentary outside JSON.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Perform a live SEO + AEO opportunity scan for weareajdigital.com. Topics: podcast production (Miami/South Florida/remote), AI consulting for entrepreneurs, content automation, personal brand authority building.\\n\\nReturn this exact JSON:\\n{\\n  \\\"scan_date\\\": \\\"YYYY-MM-DD\\\",\\n  \\\"trending_queries\\\": [{\\\"query\\\": string, \\\"trend\\\": \\\"rising|new|seasonal\\\", \\\"source\\\": string}],\\n  \\\"low_competition_keywords\\\": [{\\\"keyword\\\": string, \\\"volume_estimate\\\": string, \\\"difficulty\\\": \\\"very_low|low|medium\\\", \\\"intent\\\": \\\"informational|commercial|local\\\"}],\\n  \\\"ai_questions\\\": [{\\\"question\\\": string, \\\"answer_gap\\\": boolean, \\\"citation_opportunity\\\": \\\"high|medium|low\\\"}],\\n  \\\"local_opportunities\\\": [{\\\"keyword\\\": string, \\\"city\\\": string, \\\"competition\\\": \\\"minimal|low|medium\\\"}],\\n  \\\"content_recommendations\\\": [{\\\"action\\\": \\\"create|update|consolidate\\\", \\\"topic\\\": string, \\\"rationale\\\": string, \\\"priority\\\": \\\"critical|high|medium\\\"}]\\n}\"\n    }\n  ],\n  \"max_tokens\": 2000,\n  \"temperature\": 0.1\n}"
+      },
+      "id": "node-perplexity-scan",
+      "name": "Perplexity: Opportunity Scan",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [500, 300],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "// PASTE CONTENTS OF: workflows/n8n/code/normalizer.js\n// Full source in repo — keep this node in sync\nconst perplexityRaw = JSON.parse($('Perplexity: Opportunity Scan').first().json.choices[0].message.content);\nconst gscRows = $('GSC: Top Queries').first().json.rows || [];\nconst gscIndex = {};\nfor (const row of gscRows) {\n  const keyword = row.keys?.[0]?.toLowerCase();\n  if (keyword) gscIndex[keyword] = { clicks: row.clicks || 0, position: row.position || 99 };\n}\nconst opportunities = [];\nfor (const kw of perplexityRaw.low_competition_keywords || []) {\n  const d = { very_low: 9.5, low: 7.5, medium: 5.5 }[kw.difficulty] ?? 5.0;\n  const i = { commercial: 1.5, local: 1.3, transactional: 1.4, informational: 1.0 }[kw.intent] ?? 1.0;\n  const seo = Math.min(10, parseFloat((d * i).toFixed(1)));\n  const gsc = gscIndex[kw.keyword.toLowerCase()];\n  const aeo = kw.intent === 'informational' ? 6.0 : 5.0;\n  const combined = seo + aeo;\n  opportunities.push({\n    keyword: kw.keyword, intent: kw.intent, seo_score: seo, aeo_score: aeo,\n    combined_score: combined,\n    priority: combined >= 16 ? 'critical' : combined >= 12 ? 'high' : 'medium',\n    recommended_action: gsc ? 'optimize' : 'create',\n    source: 'perplexity_weekly_scan'\n  });\n}\nopportunities.sort((a, b) => b.combined_score - a.combined_score);\nreturn opportunities.filter(o => ['critical','high'].includes(o.priority)).map(o => ({ json: o }));"
+      },
+      "id": "node-normalizer",
+      "name": "Normalizer: Opportunity Matrix",
+      "type": "n8n-nodes-base.code",
+      "position": [700, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "combinator": "or" },
+          "conditions": [
+            { "leftValue": "={{ $json.priority }}", "operator": { "type": "string", "operation": "equals" }, "rightValue": "critical" },
+            { "leftValue": "={{ $json.priority }}", "operator": { "type": "string", "operation": "equals" }, "rightValue": "high" }
+          ]
+        }
+      },
+      "id": "node-filter-priority",
+      "name": "Filter: High+ Priority",
+      "type": "n8n-nodes-base.filter",
+      "position": [900, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $env.SANITY_PROJECT_ID }}.api.sanity.io/v2021-06-07/data/mutate/{{ $env.SANITY_DATASET }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.SANITY_API_TOKEN }}" },
+            { "name": "Content-Type",  "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={ \"mutations\": [{ \"create\": { \"_type\": \"contentBrief\", \"keyword\": \"{{ $json.keyword }}\", \"intent\": \"{{ $json.intent }}\", \"seo_score\": {{ $json.seo_score }}, \"aeo_score\": {{ $json.aeo_score }}, \"priority\": \"{{ $json.priority }}\", \"status\": \"queued\", \"created_at\": \"{{ $now.toISOString() }}\" } }] }"
+      },
+      "id": "node-sanity-queue",
+      "name": "Sanity: Queue Draft Briefs",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1100, 300],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "=🧠 *AJ Digital — Weekly Intel Report*\n📅 {{ $now.format('MMMM d, yyyy') }}\n\n📊 *Opportunities Queued:* {{ $('Filter: High+ Priority').all().length }}\n🔴 Critical: {{ $('Filter: High+ Priority').all().filter(i => i.json.priority === 'critical').length }}\n🟠 High: {{ $('Filter: High+ Priority').all().filter(i => i.json.priority === 'high').length }}\n\n🏆 *Top Keyword:* {{ $('Filter: High+ Priority').first().json.keyword }}\n\n📥 Queued in Sanity. Reply /generate to trigger content now.",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "node-telegram-intel",
+      "name": "Telegram: Intel Report",
+      "type": "n8n-nodes-base.telegram",
+      "position": [1300, 300],
+      "typeVersion": 1.1,
+      "credentials": { "telegramApi": { "id": "REPLACE_WITH_TELEGRAM_CREDENTIAL_ID", "name": "Telegram" } }
+    },
+
+    {
+      "parameters": { "path": "generate-article", "httpMethod": "POST", "responseMode": "responseNode" },
+      "id": "node-w02-webhook",
+      "name": "W02: Article Generator Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [100, 600],
+      "typeVersion": 1.1,
+      "webhookId": "REPLACE_WITH_UNIQUE_ID"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.perplexity.ai/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.PERPLEXITY_API_KEY }}" },
+            { "name": "Content-Type",  "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.1-sonar-large-128k-online\",\n  \"messages\": [\n    {\"role\": \"system\", \"content\": \"You are a senior SEO researcher. Return only valid JSON.\"},\n    {\"role\": \"user\", \"content\": \"Perform deep SERP research for: \\\"{{ $json.keyword }}\\\"\\n\\nReturn JSON: {\\\"serp_overview\\\": {\\\"top_5_urls\\\": [], \\\"dominant_format\\\": string, \\\"featured_snippet_present\\\": boolean, \\\"avg_word_count\\\": number}, \\\"paa_questions\\\": [], \\\"competitor_gaps\\\": [], \\\"aeo_answer\\\": {\\\"question\\\": string, \\\"direct_answer\\\": string}, \\\"recommended_h2s\\\": [], \\\"key_stats_to_include\\\": [{\\\"stat\\\": string, \\\"source_url\\\": string}]}\"}\n  ],\n  \"max_tokens\": 1500,\n  \"temperature\": 0.1\n}"
+      },
+      "id": "node-perplexity-deep",
+      "name": "Perplexity: Deep SERP Research",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [300, 600],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key",          "value": "={{ $env.ANTHROPIC_API_KEY }}" },
+            { "name": "anthropic-version",   "value": "2023-06-01" },
+            { "name": "Content-Type",        "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={\n  \"model\": \"claude-opus-4-5\",\n  \"max_tokens\": 4096,\n  \"system\": \"You are a senior SEO and AEO content strategist for AJ Digital (weareajdigital.com), a South Florida podcast production and AI consulting agency. Author: Audio Jones. Return only valid JSON.\",\n  \"messages\": [{\n    \"role\": \"user\",\n    \"content\": \"Write a complete AEO-optimized article.\\n\\nBRIEF:\\nKeyword: {{ $('W02: Article Generator Webhook').first().json.keyword }}\\nIntent: {{ $('W02: Article Generator Webhook').first().json.intent }}\\nAEO Question: {{ $('W02: Article Generator Webhook').first().json.aeo_question }}\\n\\nSERP RESEARCH:\\n{{ $('Perplexity: Deep SERP Research').first().json.choices[0].message.content }}\\n\\nSee full prompt spec in: workflows/n8n/code/claude-article-prompt.md\\n\\nReturn JSON: { meta_title, meta_description, h1, word_count_estimate, reading_time_minutes, article_html, faq_pairs, schema_types, internal_link_map, named_frameworks, aeo_answer_block }\"\n  }]\n}"
+      },
+      "id": "node-claude-generate",
+      "name": "Claude: Generate Article",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [500, 600],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "// PASTE CONTENTS OF: workflows/n8n/code/aeo-validator.js\n// Inline stub below — use full file in production\nlet article;\ntry {\n  article = JSON.parse($input.first().json.content[0].text);\n} catch (e) {\n  throw new Error('AEO Validator: Cannot parse Claude response — ' + e.message);\n}\nconst html = article.article_html || '';\nconst issues = [];\nconst warnings = [];\nif ((article.meta_title?.length || 0) > 60) issues.push('META_TITLE_TOO_LONG');\nif (!article.h1) issues.push('H1_MISSING');\nif ((html.match(/<h2/gi) || []).length < 4) issues.push('TOO_FEW_H2S');\nif (!/frequently asked|faq/i.test(html)) issues.push('MISSING_FAQ_SECTION');\nif (!article.faq_pairs || article.faq_pairs.length < 6) issues.push('TOO_FEW_FAQ_PAIRS');\nif (!html.includes('Audio Jones')) issues.push('MISSING_AUTHOR_BLOCK');\nif ((article.word_count_estimate || 0) < 800) issues.push('WORD_COUNT_TOO_LOW');\nif (!/work-with-us|book.*session/i.test(html)) issues.push('MISSING_CTA');\nreturn [{ json: { passed: issues.length === 0, issues, warnings, article } }];"
+      },
+      "id": "node-aeo-validator",
+      "name": "AEO Validator",
+      "type": "n8n-nodes-base.code",
+      "position": [700, 600],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "conditions": [
+            { "leftValue": "={{ $json.passed }}", "operator": { "type": "boolean", "operation": "true" } }
+          ]
+        }
+      },
+      "id": "node-validation-gate",
+      "name": "Validation Gate",
+      "type": "n8n-nodes-base.if",
+      "position": [900, 600],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "=✍️ *New Article Ready*\n\n📰 {{ $json.article.h1 }}\n📊 Words: {{ $json.article.word_count_estimate }}\n✅ Validation: {{ $json.passed ? 'PASSED' : 'PASSED WITH WARNINGS' }}\n⚠️ Warnings: {{ $json.warning_count || 0 }}\n\nReply:\n✅ /approve_DOCID\n❌ /reject_DOCID\n🔄 /revise_DOCID",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "node-telegram-approval",
+      "name": "Telegram: Approval Request",
+      "type": "n8n-nodes-base.telegram",
+      "position": [1100, 600],
+      "typeVersion": 1.1,
+      "credentials": { "telegramApi": { "id": "REPLACE_WITH_TELEGRAM_CREDENTIAL_ID", "name": "Telegram" } }
+    },
+
+    {
+      "parameters": { "path": "sanity-publish", "httpMethod": "POST", "responseMode": "lastNode" },
+      "id": "node-w03-webhook",
+      "name": "W03: Sanity Publish Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [100, 900],
+      "typeVersion": 1.1,
+      "webhookId": "REPLACE_WITH_UNIQUE_ID_2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key",          "value": "={{ $env.ANTHROPIC_API_KEY }}" },
+            { "name": "anthropic-version",   "value": "2023-06-01" },
+            { "name": "Content-Type",        "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={\n  \"model\": \"claude-opus-4-5\",\n  \"max_tokens\": 2000,\n  \"messages\": [{\n    \"role\": \"user\",\n    \"content\": \"Generate a distribution pack for article: {{ $json.title }}\\nURL: https://weareajdigital.com/blog/{{ $json.slug }}/\\nSummary: {{ $json.metaDescription }}\\nKey insight: {{ $json.faqPairs[0].answer }}\\n\\nReturn JSON: { social_posts: [{platform, copy, hashtags}], email_digest: {subject_line, preview_text, body_html}, gbp_post: {text, cta_type, cta_url}, short_form_script: {hook, body, cta, total_duration_seconds, caption} }\"\n  }]\n}"
+      },
+      "id": "node-claude-distribute",
+      "name": "Claude: Distribution Pack",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [300, 900],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "=📢 *Distribution Pack Ready*\n\n📰 {{ $('W03: Sanity Publish Webhook').first().json.title }}\n\n✅ Social posts: 3\n✅ Email digest: ready\n✅ GBP post: ready\n✅ Short-form script: {{ JSON.parse($input.first().json.content[0].text).short_form_script.total_duration_seconds }}s\n\nReview full pack in Sanity CMS.",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "node-telegram-distribute",
+      "name": "Telegram: Distribution Ready",
+      "type": "n8n-nodes-base.telegram",
+      "position": [500, 900],
+      "typeVersion": 1.1,
+      "credentials": { "telegramApi": { "id": "REPLACE_WITH_TELEGRAM_CREDENTIAL_ID", "name": "Telegram" } }
+    },
+
+    {
+      "parameters": { "errorWorkflow": "REPLACE_WITH_ERROR_WORKFLOW_ID" },
+      "id": "node-error-settings",
+      "name": "Error Settings",
+      "type": "n8n-nodes-base.errorTrigger",
+      "position": [100, 1200],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "=❌ *Workflow Error*\n\n🔧 Workflow: {{ $workflow.name }}\n📍 Node: {{ $execution.lastNodeExecuted }}\n💬 Error: {{ $json.error.message }}\n🕐 Time: {{ $now.format('HH:mm, MMM d') }}",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "node-error-telegram",
+      "name": "Telegram: Error Alert",
+      "type": "n8n-nodes-base.telegram",
+      "position": [300, 1200],
+      "typeVersion": 1.1,
+      "credentials": { "telegramApi": { "id": "REPLACE_WITH_TELEGRAM_CREDENTIAL_ID", "name": "Telegram" } }
+    }
+  ],
+
+  "connections": {
+    "W01: Monday Intel Trigger":    { "main": [[{ "node": "GSC: Top Queries", "type": "main", "index": 0 }]] },
+    "GSC: Top Queries":             { "main": [[{ "node": "Perplexity: Opportunity Scan", "type": "main", "index": 0 }]] },
+    "Perplexity: Opportunity Scan": { "main": [[{ "node": "Normalizer: Opportunity Matrix", "type": "main", "index": 0 }]] },
+    "Normalizer: Opportunity Matrix": { "main": [[{ "node": "Filter: High+ Priority", "type": "main", "index": 0 }]] },
+    "Filter: High+ Priority":       { "main": [[{ "node": "Sanity: Queue Draft Briefs", "type": "main", "index": 0 }]] },
+    "Sanity: Queue Draft Briefs":   { "main": [[{ "node": "Telegram: Intel Report", "type": "main", "index": 0 }]] },
+    "W02: Article Generator Webhook": { "main": [[{ "node": "Perplexity: Deep SERP Research", "type": "main", "index": 0 }]] },
+    "Perplexity: Deep SERP Research": { "main": [[{ "node": "Claude: Generate Article", "type": "main", "index": 0 }]] },
+    "Claude: Generate Article":     { "main": [[{ "node": "AEO Validator", "type": "main", "index": 0 }]] },
+    "AEO Validator":                { "main": [[{ "node": "Validation Gate", "type": "main", "index": 0 }]] },
+    "Validation Gate":              {
+      "main": [
+        [{ "node": "Telegram: Approval Request", "type": "main", "index": 0 }],
+        [{ "node": "Telegram: Approval Request", "type": "main", "index": 0 }]
+      ]
+    },
+    "W03: Sanity Publish Webhook":  { "main": [[{ "node": "Claude: Distribution Pack", "type": "main", "index": 0 }]] },
+    "Claude: Distribution Pack":    { "main": [[{ "node": "Telegram: Distribution Ready", "type": "main", "index": 0 }]] },
+    "Error Settings":               { "main": [[{ "node": "Telegram: Error Alert", "type": "main", "index": 0 }]] }
+  },
+
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "REPLACE_WITH_ERROR_WORKFLOW_ID"
+  },
+
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "REPLACE_WITH_N8N_INSTANCE_ID"
+  },
+
+  "_aj_digital_notes": {
+    "version": "2.0",
+    "last_updated": "2026-04-03",
+    "replace_before_import": [
+      "REPLACE_WITH_GSC_CREDENTIAL_ID",
+      "REPLACE_WITH_TELEGRAM_CREDENTIAL_ID",
+      "REPLACE_WITH_UNIQUE_ID",
+      "REPLACE_WITH_UNIQUE_ID_2",
+      "REPLACE_WITH_ERROR_WORKFLOW_ID",
+      "REPLACE_WITH_N8N_INSTANCE_ID"
+    ],
+    "code_nodes": "Inline stubs only — paste full code from workflows/n8n/code/*.js",
+    "full_spec": "workflows/n8n/seo-aeo-engine-workflow.md"
+  }
+}
