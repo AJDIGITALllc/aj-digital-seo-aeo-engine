@@ -1,6 +1,6 @@
-# AJ Digital Skill OS
+# AJ Digital SEO/AEO Engine
 
-**The operating system for building premium digital products at scale.**
+**The operating system for building premium digital products that rank and convert.**
 
 Built by [AJ Digital LLC](mailto:dev@audiojones.com) — a systems-driven agency that treats every project like infrastructure, not a one-off.
 
@@ -33,7 +33,7 @@ The result: $10K–$100K+ websites built with the consistency of a product team,
 ## Repository Structure
 
 ```
-aj-digital-skill-os/
+aj-digital-seo-aeo-engine/
 │
 ├── skills/                    # Core knowledge modules
 │   ├── web_building/          # Website architecture, design, CRO, SEO, AEO
@@ -135,7 +135,11 @@ This is not documentation for documentation's sake. Every file in this repo is a
 
 ```bash
 # Clone the repo
-git clone https://github.com/AJDIGITALORG/aj-digital-skill-os.git
+git clone git@github.com:AJDIGITALllc/aj-digital-seo-aeo-engine.git
+
+# Copy environment template
+cp .env.example .env
+# Fill in your API keys in .env
 
 # Read the architecture
 cat system/repo_architecture.md

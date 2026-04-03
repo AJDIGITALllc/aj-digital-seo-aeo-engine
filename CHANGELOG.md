@@ -16,6 +16,35 @@ Versions are tagged at the point of commit, not at the point of authoring.
 
 ---
 
+## [1.6.0] — 2026-04-03
+
+**Summary:** Added the n8n workflow spec for the full SEO/AEO research and approval pipeline. Defines two-workflow architecture (Research Run + Approval Handler), 22 nodes across both workflows, scoring algorithm, Telegram approval routing, and Sanity/GitHub/Cloudflare persistence. Updated `.env.example` with all workflow dependencies.
+
+### Added
+
+- `workflows/n8n/seo-aeo-engine-workflow.md` — End-to-end n8n workflow spec: Workflow A (12 nodes — Schedule/Manual Trigger, Brand Config, Perplexity research, Normalize, GSC, Merge, Score Opportunities, OpenAI briefs, Telegram approval send, Log Output) and Workflow B (10 nodes — Telegram Trigger, Parse Command, IF branch, Sanity persist, GitHub archive, Cloudflare store, approve/reject/revise confirmations). Includes node types, credentials, request bodies, sample JavaScript, error handling, testing checklist, and 3-phase build order.
+
+### Changed
+
+- `.env.example` — Expanded with all workflow dependencies: `OPENAI_API_KEY`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN`, `GSC_SITE_URL`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `GITHUB_TOKEN`, `GITHUB_REPO`, `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_ZONE_ID`. Each variable now includes an inline comment referencing its workflow node.
+
+---
+
+## [1.5.0] — 2026-04-03
+
+**Summary:** Repository prepared for initial push to `AJDIGITALllc/aj-digital-seo-aeo-engine` on GitHub. Corrected repo identity, expanded gitignore, and added environment variable template.
+
+### Added
+
+- `.env.example` — Environment variable template covering Anthropic API, SEO tools (Perplexity, Ahrefs, SEMrush), CMS (Sanity), analytics (Plausible, GA4), automation (Make, Slack), and project config. Copy to `.env` and fill in values — never commit `.env`.
+
+### Changed
+
+- `README.md` — Updated title from "AJ Digital Skill OS" to "AJ Digital SEO/AEO Engine". Corrected repo name in directory tree from `aj-digital-skill-os/` to `aj-digital-seo-aeo-engine/`. Fixed clone URL from `https://github.com/AJDIGITALORG/aj-digital-skill-os.git` to `git@github.com:AJDIGITALllc/aj-digital-seo-aeo-engine.git`. Added `.env.example` copy step to Quick Start.
+- `.gitignore` — Expanded from minimal OS/editor rules to comprehensive coverage: environment files (`.env.*`), Node/package managers, build outputs (`.next/`, `dist/`, `.cache/`), logs, test coverage, temp files, and Claude Code local settings.
+
+---
+
 ## [1.4.0] — 2026-03-22
 
 **Summary:** Added the offer architecture for AJ Digital's website and digital delivery services. The Skill OS now defines exactly what is sold, at what tier, to whom, and how sales commitments translate to delivery scope — closing the gap between sales and delivery.
