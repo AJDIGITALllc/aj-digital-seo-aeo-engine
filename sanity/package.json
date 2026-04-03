@@ -1,0 +1,21 @@
+{
+  "name": "aj-digital-seo-aeo-engine-studio",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Sanity Studio for AJ Digital SEO/AEO Engine",
+  "scripts": {
+    "dev":    "sanity dev",
+    "build":  "sanity build",
+    "deploy": "sanity deploy",
+    "start":  "sanity start"
+  },
+  "dependencies": {
+    "react":         "^18",
+    "react-dom":     "^18",
+    "sanity":        "^3",
+    "@sanity/vision": "^3"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}
